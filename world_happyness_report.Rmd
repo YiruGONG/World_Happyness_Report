@@ -7,7 +7,7 @@ output: pdf_document
 library(tidyverse)
 ```
 
-## The group members (names and UNIs)
+### The group members (names and UNIs)
 
 Jiaqi Chen (jc5681),
 Xinran Sun (xs2447),
@@ -17,7 +17,6 @@ Yunlin Zhou (yz4184)
 ## The tentative project title
 
 World Happiness' Relationship to Social Factors
-
 
 ## The motivation for this project
 
@@ -36,11 +35,11 @@ happiness_data = read_excel("DataPanelWHR2021C2.xls")
 
 ## The planned analyses / visualizations / coding challenges
 
-We will first visualize the global happiness score distribution with a world map and rank with bar plots. Besides, a yearly alteration line plot will be presented. Then we will investigate the relationship between happiness score and GDP, social support, life expectancy, freedom score to make life choices, Generosity, Perceptions of corruption, and interactive scatter plots with fitted curve will be plotted. All plots will be presented by plotly interactive plots to ensure readability. The coding challenges remains in data cleaning, visualizing, and relationship analyzing.
+We will first visualize the global happiness score distribution with a world map and a bar plot of happiness rank. Besides, a yearly alteration line plot will be presented. Then we will investigate the relationship between happiness score and GDP, social support, life expectancy, freedom score to make life choices, Generosity, Perceptions of corruption, and scatter plots with fitted curve will be plotted. All plots will be presented by `plotly` interactive plots to ensure readability. The coding challenges remains in data cleaning, visualizing, and relationship analyzing.
 
 ## The planned timeline
 
-November 16-19: Project Review Meeting
-November 20-26: Writing Scripts
-November 27-December 3: Report
-December 4-10: Webpage and screencast
+* November 16-19: Project Review Meeting
+* November 20-26: Writing Scripts
+* November 27-December 3: Report
+* December 4-10: Webpage and screencast
