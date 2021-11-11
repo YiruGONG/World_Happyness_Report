@@ -9,17 +9,29 @@ output: pdf_document
 library(tidyverse)
 ```
 
-The group members (names and UNIs)
+## The group members (names and UNIs)
 
-The tentative project title
+Jiaqi Chen, jc5681
+Xinran Sun, xs2447
+Yiru Gong, yg2832
+Yunlin Zhou, yz4184
 
-The motivation for this project
+## The tentative project title
 
-The intended final products
+World Happiness' Relationship to Social Factors
 
-The anticipated data sources
+## The motivation for this project
 
-The planned analyses / visualizations / coding challenges
+## The intended final products
 
-The planned timeline
+## The anticipated data sources
+
+```{r}
+
+```
+
+
+## The planned analyses / visualizations / coding challenges
+
+## The planned timeline
 
