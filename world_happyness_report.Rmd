@@ -1,6 +1,6 @@
 ---
 title: "Proposal"
-author: "Yiru Gong"
+author: "Yiru Gong, Jiaqi Chen, Xinran Sun, Yunlin Zhou"
 date: "11/10/2021"
 output: pdf_document
 ---
@@ -35,6 +35,8 @@ happiness_data = read_excel("DataPanelWHR2021C2.xls")
 ```
 
 ## The planned analyses / visualizations / coding challenges
+
+We will first visualize the global happiness score distribution with a world map and rank with bar plots. Besides, a yearly alteration line plot will be presented. Then we will investigate the relationship between happiness score and GDP, social support, life expectancy, freedom score to make life choices, Generosity, Perceptions of corruption, and interactive scatter plots with fitted curve will be ploted. 
 
 ## The planned timeline
 
