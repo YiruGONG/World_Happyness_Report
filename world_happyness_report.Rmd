@@ -9,7 +9,6 @@ output: pdf_document
 library(tidyverse)
 ```
 
-<<<<<<< HEAD
 The group members (names and UNIs)
 
 The tentative project title
@@ -23,5 +22,4 @@ The anticipated data sources
 The planned analyses / visualizations / coding challenges
 
 The planned timeline
-=======
->>>>>>> f9b0d9eb8c00cf2881b21591c7f5e9188fc090ef
+
