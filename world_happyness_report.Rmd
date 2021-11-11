@@ -11,10 +11,10 @@ library(tidyverse)
 
 ## The group members (names and UNIs)
 
-Jiaqi Chen, jc5681
-Xinran Sun, xs2447
-Yiru Gong, yg2832
-Yunlin Zhou, yz4184
+Jiaqi Chen (jc5681),
+Xinran Sun (xs2447),
+Yiru Gong (yg2832),
+Yunlin Zhou (yz4184),
 
 ## The tentative project title
 
