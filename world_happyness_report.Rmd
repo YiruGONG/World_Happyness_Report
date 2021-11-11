@@ -31,10 +31,10 @@ library(readxl)
 happiness_data = read_excel("DataPanelWHR2021C2.xls")
 ```
 
-
 ## The planned analyses / visualizations / coding challenges
 
 ## The planned timeline
+
 November 16-19: Project Review Meeting
 November 20-26: Writing Scripts
 November 27-December 3: Report
