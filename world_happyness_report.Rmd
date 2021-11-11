@@ -1,0 +1,10 @@
+---
+title: "Proposal"
+author: "Yiru Gong"
+date: "11/10/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+```
