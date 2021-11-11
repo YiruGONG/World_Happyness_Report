@@ -18,9 +18,17 @@ Yunlin Zhou, yz4184
 
 ## The tentative project title
 
+<<<<<<< HEAD
+
+
+The intended final products
+=======
 World Happiness' Relationship to Social Factors
+>>>>>>> 466eb8898d5ad4b93eff5da5886eded6f4375b22
 
 ## The motivation for this project
+
+We chose this dataset because we want to analyze what factors affect people's happiness scores. Factors that are included into our consideration are country, year, GDP, healthy life expectancy at birth, freedom to make life choices, generosity, and perceptions of corruption. Our goal is to find out both direct and inverse relationships between people's heappiness and above factors. 
 
 ## The intended final products
 
