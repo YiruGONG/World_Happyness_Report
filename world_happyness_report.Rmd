@@ -41,7 +41,7 @@ happiness_data = read_excel("DataPanelWHR2021C2.xls")
 
 ## The planned analyses / visualizations / coding challenges
 
-We will first visualize the global happiness score distribution with a world map and rank with bar plots. Besides, a yearly alteration line plot will be presented. Then we will investigate the relationship between happiness score and GDP, social support, life expectancy, freedom score to make life choices, Generosity, Perceptions of corruption, and interactive scatter plots with fitted curve will be ploted. 
+We will first visualize the global happiness score distribution with a world map and rank with bar plots. Besides, a yearly alteration line plot will be presented. Then we will investigate the relationship between happiness score and GDP, social support, life expectancy, freedom score to make life choices, Generosity, Perceptions of corruption, and interactive scatter plots with fitted curve will be plotted. All plots will be presented by plotly interactive plots to ensure readability. The coding challenges remains in data cleaning, visualizing, and relationship analyzing.
 
 ## The planned timeline
 
