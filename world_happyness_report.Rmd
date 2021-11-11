@@ -1,6 +1,6 @@
 ---
 title: "Proposal"
-author: "Yiru Gong"
+author: "Yiru Gong, Jiaqi Chen, Xinran Sun, Yunlin Zhou"
 date: "11/10/2021"
 output: pdf_document
 ---
