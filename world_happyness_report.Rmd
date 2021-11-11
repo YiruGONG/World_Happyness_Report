@@ -29,7 +29,7 @@ We chose this dataset because we want to analyze what factors affect people's ha
 
 ## The anticipated data sources
 
-We downloaded this dataset from [Kaggle.com](https://worldhappiness.report/ed/2021/#appendices-and-data).
+We downloaded this dataset from [World Happiness Report](https://worldhappiness.report/ed/2021/#appendices-and-data).
 
 ```{r}
 library(readxl)
