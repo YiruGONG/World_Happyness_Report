@@ -11,20 +11,15 @@ library(tidyverse)
 
 ## The group members (names and UNIs)
 
-Jiaqi Chen, jc5681
-Xinran Sun, xs2447
-Yiru Gong, yg2832
-Yunlin Zhou, yz4184
+Jiaqi Chen (jc5681),
+Xinran Sun (xs2447),
+Yiru Gong (yg2832),
+Yunlin Zhou (yz4184),
 
 ## The tentative project title
 
-<<<<<<< HEAD
-
-
-The intended final products
-=======
 World Happiness' Relationship to Social Factors
->>>>>>> 466eb8898d5ad4b93eff5da5886eded6f4375b22
+
 
 ## The motivation for this project
 
