@@ -24,8 +24,10 @@ happy_df = readxl::read_xls('DataPanelWHR2021C2.xls') %>%
 # World map of Happiness
 
 # Happiness score Rank
+barplot
 
 # Yearly Trend
+line plot
 
 # Factors Related to Happiness Score
 
