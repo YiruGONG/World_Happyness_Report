@@ -62,16 +62,8 @@ plot_2018_map = happy_iso3 %>%
 plot_2018_map
 ```
 
-# Happiness score Rank
-<<<<<<< HEAD
-barplot
-
 # Happiness score Rank (2018, bar plot)
-=======
 
-=======
-
->>>>>>> 430fec251399c7121799528396472fd68aea51cf
 ```{r}
 score_rank = 
   happy_df %>% 
@@ -95,10 +87,6 @@ yearly_trend =
 
 yearly_trend
 ```
-<<<<<<< HEAD
-=======
-
->>>>>>> 430fec251399c7121799528396472fd68aea51cf
 
 
 # Factors Related to Happiness Score
