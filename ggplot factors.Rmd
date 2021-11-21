@@ -73,4 +73,4 @@ gg_negative = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$negative_affe
 library(patchwork)
 (gg_log + gg_social + gg_healthy +gg_freedom ) / (gg_generosity + gg_perceptions + gg_positive + gg_negative)
 ```
-
+As shown in the plots, all the factors are related to the happiness score. People would feel happy if the country they live in have high GDP, strong social support, high life expectancy, and they could be free to make life choices, also the country is generous and  offering positive affect. On the contrary, if a country has a corrupt government and offers negative affect, people wouldn't have a happy life.
