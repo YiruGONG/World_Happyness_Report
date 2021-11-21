@@ -120,9 +120,8 @@ Since all factors are continuous, we can apply fundamental linear regression her
 ```{r}
 # General Model
 happy_fit = happy_df %>% 
-  select(-country_name)
+  select(-country_name,-year)
 fit = happy_fit %>%
-  mutate(year = as.integer(year)) %>% 
   lm(life_ladder~., data=.) %>% 
   broom.mixed::tidy()
 knitr::kable(fit)
