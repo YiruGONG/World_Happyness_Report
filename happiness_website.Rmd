@@ -1,6 +1,9 @@
 ---
 title: "Happiness_website"
-output: html_document
+output: 
+  html_document:
+    toc: true
+    toc_float: true
 ---
 
 ```{r setup, include=FALSE}
@@ -61,8 +64,13 @@ plot_2018_map = happy_iso3 %>%
 plot_2018_map
 ```
 
+<<<<<<< HEAD
 
 # Happiness Score Rank
+=======
+# Happiness score Rank (2018, bar plot)
+
+>>>>>>> 2967da5a5457ebd746a72d74ee47d826829ee44a
 ```{r}
 score_rank = 
   happy_df %>% 
@@ -86,8 +94,11 @@ yearly_trend =
 
 yearly_trend
 ```
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 2967da5a5457ebd746a72d74ee47d826829ee44a
 
 
 # Factors Related to Happiness Score
