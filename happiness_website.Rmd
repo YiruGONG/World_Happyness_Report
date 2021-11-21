@@ -14,8 +14,9 @@ Yunlin Zhou (yz4184)
 
 # World map of Happiness
 
-# Happiness score Rank
-barplot
+# Happiness score Rank (2018)
+
+bar plot
 
 # Yearly Trend
 line plot
