@@ -16,7 +16,12 @@ options(
 
 scale_colour_discrete = scale_colour_viridis_d
 scale_fill_discrete = scale_fill_viridis_d
+<<<<<<< HEAD
 
+=======
+library(plotly)
+library(dplyr)
+>>>>>>> 430fec251399c7121799528396472fd68aea51cf
 ```
 
 Jiaqi Chen (jc5681),
@@ -64,9 +69,15 @@ plot_2018_map
 ```
 
 # Happiness score Rank
+<<<<<<< HEAD
 barplot
 
 # Happiness score Rank (2018, bar plot)
+=======
+
+=======
+
+>>>>>>> 430fec251399c7121799528396472fd68aea51cf
 ```{r}
 score_rank = 
   happy_df %>% 
@@ -87,7 +98,13 @@ yearly_trend =
   happy_df %>% 
   filter(country_name == "Denmark" | country_name == "United States" | country_name == "China" | country_name == "Afghanistan" | country_name == "Mongolia" | country_name == "Haiti") %>% 
   ggplot(aes(group = country_name, x = year, y = life_ladder, color = country_name)) + geom_point(alpha = .5) + geom_line() 
+
+yearly_trend
 ```
+<<<<<<< HEAD
+=======
+
+>>>>>>> 430fec251399c7121799528396472fd68aea51cf
 
 
 # Factors Related to Happiness Score
