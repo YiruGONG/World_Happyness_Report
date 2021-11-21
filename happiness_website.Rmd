@@ -80,6 +80,8 @@ score_rank %>%
   plot_ly(x = ~life_ladder, y = ~country_name, color = ~country_name, type = "bar", colors = "viridis")
 ```
 
+We used data of 2018 to plot this graph because we wanted to know people's happiness rank before COVID-19 started. Before COVID-19 emerged, Denmark had the highest happiness score, while Afghanistan had the lowest happiness score.
+
 
 # Yearly Trend
 ```{r}
@@ -91,6 +93,7 @@ yearly_trend =
 yearly_trend
 ```
 
+We wanted to see countries' happiness score trend on a yearly base and chose two countries from each of three groups: high-happiness-score group, medium-happiness-score group, and low-happiness-score group to plot this graph. The selected countries are Denmark, United States, China, Mongolia, Afghanistan, and Haiti. We saw that the happiness score of countries from high-happiness-score group tends to stay stable over years and go slightly lower during COVID-19 period. The happiness score of countries from medium-happiness-score group tends to increase over years and keep increasing during COVID-19 period. The happiness score of countries from low-happiness-score group tends to fluctuate over years and decrease during COVID-19 period.
 
 
 # Factors Related to Happiness Score
