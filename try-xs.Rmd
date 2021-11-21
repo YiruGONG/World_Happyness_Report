@@ -1,0 +1,51 @@
+---
+title: "Try"
+author: "Xinran Sun"
+date: "11/21/2021"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(countrycode)
+library(plotly)
+``` 
+
+
+```{r}
+data = readxl::read_xls("DataPanelWHR2021C2.xls") %>% 
+  janitor::clean_names()
+```
+
+```{r}
+country_full = data[, 1]
+country_iso3 = countrycode(country_full, "country.name", "iso3c")
+```
+
+
+```{r}
+data_iso3 = data %>% 
+  subset(
+    country_name != "Kosovo" & country_name != "Somaliland region"
+  ) %>% 
+  mutate(
+    country_code = countrycode(country_name, "country.name", "iso3c")
+  ) %>% 
+  relocate(country_code)
+```
+
+```{r}
+plot_2018_map = data_iso3 %>% 
+  filter(year == 2018) %>% 
+  plot_ly(
+    type = 'choropleth', locations = ~country_code, z = ~life_ladder,
+    text = ~country_name, colorscale = "Blues"
+  )
+
+plot_2018_map
+```
+
+
+
+
+

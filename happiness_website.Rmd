@@ -5,6 +5,16 @@ output: html_document
 
 ```{r setup, include=FALSE}
 library(tidyverse)
+library(countrycode)
+library(plotly)
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
 ```
 
 Jiaqi Chen (jc5681),
@@ -22,6 +32,28 @@ happy_df = readxl::read_xls('DataPanelWHR2021C2.xls') %>%
 
 
 # World map of Happiness
+
+```{r}
+happy_iso3 = happy_df %>% 
+  subset(
+    country_name != "Kosovo" & country_name != "Somaliland region"
+  ) %>% 
+  mutate(
+    country_code = countrycode(country_name, "country.name", "iso3c")
+  ) %>% 
+  relocate(country_code)
+```
+
+```{r}
+plot_2018_map = happy_iso3 %>% 
+  filter(year == 2018) %>% 
+  plot_ly(
+    type = 'choropleth', locations = ~country_code, z = ~life_ladder,
+    text = ~country_name
+  )
+
+plot_2018_map
+```
 
 # Happiness score Rank
 barplot
