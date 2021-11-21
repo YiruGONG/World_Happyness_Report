@@ -1,0 +1,23 @@
+---
+title: "Happiness_website"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+```
+
+Jiaqi Chen (jc5681),
+Xinran Sun (xs2447),
+Yiru Gong (yg2832),
+Yunlin Zhou (yz4184)
+
+# World map of Happiness
+
+# Happiness score Rank
+
+# Yearly Trend
+
+# Factors Related to Happiness Score
+
+# Regression Model
