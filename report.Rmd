@@ -1,12 +1,8 @@
 ---
-title: "Home"
-output: 
-  html_document:
-    toc: true
-    toc_float: true
+title: "Report"
+output: html_document
 ---
 
-<<<<<<< HEAD
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(countrycode)
@@ -32,7 +28,6 @@ Yunlin Zhou (yz4184)
 ```{r}
 happy_df = readxl::read_xls('DataPanelWHR2021C2.xls') %>% 
   janitor::clean_names()
-
 ```
 
 
@@ -40,7 +35,7 @@ happy_df = readxl::read_xls('DataPanelWHR2021C2.xls') %>%
 
 Install countrycode package using `install.packages("countrycode")` if needed.
 
-We wanted to use a plotly to show the happiness score around the world. We added a country_code column which provides the iso3 code of each country because plotly need iso3 country code to draw country map. We also deleted Kosovo and Somaliland region because they do not have corresponding iso3 code. 
+We want to use a plotly to show the happiness score around the world. We add a country_code column which provides the iso3 code of each country because plotly need iso3 country code to draw country map. We also delete Kosovo and Somaliland region because they do not have corresponding iso3 code. 
 
 ```{r}
 happy_iso3 = happy_df %>% 
@@ -53,7 +48,7 @@ happy_iso3 = happy_df %>%
   relocate(country_code)
 ```
 
-We focused on Year 2018 because we wanted to know the happiness score before COVID-19. Each country's life ladder (happiness) score is shown on the map. 
+We focus on Year 2018 because we want to know the happiness score before COVID-19. Each country's life ladder (happiness) score is shown on the map. 
 
 ```{r}
 plot_2018_map = happy_iso3 %>% 
@@ -66,8 +61,9 @@ plot_2018_map = happy_iso3 %>%
 plot_2018_map
 ```
 
-# Happiness score Rank (2018, bar plot)
 
+
+# Happiness Score Rank
 ```{r}
 score_rank = 
   happy_df %>% 
@@ -81,8 +77,10 @@ score_rank %>%
   plot_ly(x = ~life_ladder, y = ~country_name, color = ~country_name, type = "bar", colors = "viridis")
 ```
 
+We used data of 2018 to plot this graph because we wanted to know people's happiness rank before COVID-19 started. Before COVID-19 emerged, Denmark had the highest happiness score, while Afghanistan had the lowest happiness score.
 
-# Yearly Trend (line plot)
+
+# Yearly Trend
 ```{r}
 yearly_trend = 
   happy_df %>% 
@@ -92,11 +90,10 @@ yearly_trend =
 yearly_trend
 ```
 
+We wanted to see countries' happiness score trend on a yearly base and chose two countries from each of three groups: high-happiness-score group, medium-happiness-score group, and low-happiness-score group to plot this graph. The selected countries are Denmark, United States, China, Mongolia, Afghanistan, and Haiti. We saw that the happiness score of countries from high-happiness-score group tends to stay stable over years and go slightly lower during COVID-19 period. The happiness score of countries from medium-happiness-score group tends to increase over years and keep increasing during COVID-19 period. The happiness score of countries from low-happiness-score group tends to fluctuate over years and decrease during COVID-19 period.
+
 
 # Factors Related to Happiness Score
 
 # Regression Model
 
-=======
-<img src="happiness.jpeg" style="width:100%; border:2px solid">
->>>>>>> aac575065f67da93bb817a439a2404d190803476

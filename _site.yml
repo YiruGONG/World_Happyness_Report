@@ -1,7 +1,7 @@
 name: "Happiness Website"
 output_dir: "."
 navbar:
-  title: "Overview"
+  title: "Home"
   right:
     - text: "Data Exploration"
       href: exploration.html
