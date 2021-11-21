@@ -5,6 +5,8 @@ output: html_document
 
 ```{r setup, include=FALSE}
 library(tidyverse)
+library(plotly)
+library(dplyr)
 ```
 
 Jiaqi Chen (jc5681),
@@ -23,12 +25,29 @@ happy_df = readxl::read_xls('DataPanelWHR2021C2.xls') %>%
 
 # World map of Happiness
 
-# Happiness score Rank (2018)
+# Happiness score Rank (2018, bar plot)
+```{r}
+score_rank = 
+  happy_df %>% 
+  filter(year == "2018") %>% 
+  arrange(life_ladder) %>% 
+  mutate(
+    country_name = factor(country_name, levels = country_name)
+  )
 
-bar plot
+score_rank %>% 
+  plot_ly(x = ~life_ladder, y = ~country_name, color = ~country_name, type = "bar", colors = "viridis")
+```
 
-# Yearly Trend
-line plot
+
+# Yearly Trend (line plot)
+```{r}
+yearly_trend = 
+  happy_df %>% 
+  filter(country_name == "Denmark" | country_name == "United States" | country_name == "China" | country_name == "Afghanistan" | country_name == "Mongolia" | country_name == "Haiti") %>% 
+  ggplot(aes(group = country_name, x = year, y = life_ladder, color = country_name)) + geom_point(alpha = .5) + geom_line() 
+```
+
 
 # Factors Related to Happiness Score
 
