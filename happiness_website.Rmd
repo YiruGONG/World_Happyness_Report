@@ -10,8 +10,19 @@ output:
 
 <br>
 
-Happiness is one of the most important feelings for human beings. In this project, we aimed to find out what factors affect happiness and in what way do these factors affect happiness. 
+Happiness is one of the most important feelings for human beings. In this project, we aimed to find out 
+* what factors affect happiness. 
+* In what way do these factors affect happiness. 
+* How does COVID-19 affect happiness.
+* How to increase happiness score.
 
 # Dataset
+
+
+# Group Members
+* [Jiaqi Chen](https://jchen0000.github.io/)
+* [Xinran Sun]
+* [Yiru Gong]
+* [Yunlin Zhou]
 
 
