@@ -1,7 +1,7 @@
 name: "Happiness Website"
 output_dir: "."
 navbar:
-  title: "Overview"
+  title: "Home"
   right:
     - text: "Data Exploration"
       href: exploration.html
@@ -14,7 +14,7 @@ navbar:
     - text: "About"
       href: Proposal.html
     - text: "Report"
-      href : happiness_website.html
+      href : report.html
     - icon: fa-envelope fa-lg
       href: mailto:<xs2447@cumc.columbia.edu>
     - icon: fa-github fa-lg
