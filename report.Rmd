@@ -32,7 +32,6 @@ happy_df = readxl::read_xls('DataPanelWHR2021C2.xls') %>%
   janitor::clean_names()
 ```
 
-
 # World map of Happiness
 
 Install countrycode package using `install.packages("countrycode")` if needed.
@@ -65,7 +64,8 @@ plot_2018_map
 
 
 
-# Happiness Score Rank
+# Happiness Score Rank in 2018
+
 ```{r}
 score_rank = 
   happy_df %>% 
@@ -83,6 +83,7 @@ We used data of 2018 to plot this graph because we wanted to know people's happi
 
 
 # Yearly Trend
+
 ```{r}
 yearly_trend = 
   happy_df %>% 
@@ -98,8 +99,6 @@ We wanted to see countries' happiness score trend on a yearly base and chose two
 # Factors Related to Happiness Score
 
 # Regression Model
-
-## Data Distribution
 
 To identify the significance of relationships and establish a regression model to predict the happiness score, we first take a look on the distribution of each variable.
 
@@ -134,6 +133,8 @@ The result indicated that `r fit[-1,] %>% filter(p.value<0.05) %>% pull(term)` a
 To test the model efficiency and its predictory ability, we apply 100 times of cross validation and calculate the mean value of root mean squared errors (RMSE) over 100 CVs.
 
 ```{r}
+set.seed(1)
+
 cv_df = crossv_mc(happy_fit, 100) %>% 
   mutate(train = map(train,as_tibble),
          test = map(test, as_tibble)) %>% 
