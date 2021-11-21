@@ -8,6 +8,8 @@ library(tidyverse)
 library(countrycode)
 library(plotly)
 library(dplyr)
+library(modelr)
+library(mgcv)
 
 options(
   ggplot2.continuous.colour = "viridis",
