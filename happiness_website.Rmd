@@ -1,102 +1,177 @@
+<<<<<<< HEAD
 ---
-title: "Home"
+title: "Overview"
 output: 
   html_document:
     toc: true
     toc_float: true
 ---
 
-<<<<<<< HEAD
+<img src="happiness.jpeg" style="width:100%; border:2px solid">
+
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(countrycode)
 library(plotly)
 library(dplyr)
+library(modelr)
+library(mgcv)
 
-options(
-  ggplot2.continuous.colour = "viridis",
-  ggplot2.continuous.fill = "viridis"
-)
+Happiness is one of the most important feelings for human beings. In this project, we aimed to find out 
+* what factors affect happiness. 
+* In what way do these factors affect happiness. 
+* How does COVID-19 affect happiness.
+* How to increase happiness score.
 
-scale_colour_discrete = scale_colour_viridis_d
-scale_fill_discrete = scale_fill_viridis_d
-```
-
-Jiaqi Chen (jc5681),
-Xinran Sun (xs2447),
-Yiru Gong (yg2832),
-Yunlin Zhou (yz4184)
-
-## Data Input
-
-```{r}
-happy_df = readxl::read_xls('DataPanelWHR2021C2.xls') %>% 
-  janitor::clean_names()
-
-```
+# Dataset
 
 
-# World map of Happiness
+# Group Members
+* [Jiaqi Chen](https://jchen0000.github.io/)
+* [Xinran Sun]
+* [Yiru Gong]
+* [Yunlin Zhou]
 
-Install countrycode package using `install.packages("countrycode")` if needed.
 
-We wanted to use a plotly to show the happiness score around the world. We added a country_code column which provides the iso3 code of each country because plotly need iso3 country code to draw country map. We also deleted Kosovo and Somaliland region because they do not have corresponding iso3 code. 
+## Data Distribution
+
+To identify the significance of relationships and establish a regression model to predict the happiness score, we first take a look on the distribution of each variable.
 
 ```{r}
-happy_iso3 = happy_df %>% 
-  subset(
-    country_name != "Kosovo" & country_name != "Somaliland region"
-  ) %>% 
+par(mfrow= c(3,3))
+for (n in 3:ncol(happy_df)){
+  var = names(happy_df)[n]
+  pull(happy_df,n) %>% hist(main=var,xlab=var)
+}
+```
+
+Here our response variable `lie_ladder` follows great bell shape and is relatively non-skewed. Most of the factors are normally distributed. Therefore we can proceed to build regression model.
+
+## Linear regression model
+
+Since all factors are continuous, we can apply fundamental linear regression here.
+
+```{r}
+# General Model
+happy_fit = happy_df %>% 
+  select(-country_name)
+fit = happy_fit %>%
+  mutate(year = as.integer(year)) %>% 
+  lm(life_ladder~., data=.) %>% 
+  broom.mixed::tidy()
+knitr::kable(fit)
+```
+
+The result indicated that `r fit[-1,] %>% filter(p.value<0.05) %>% pull(term)` are all significantly correlated with happiness score, while `r fit[-1,] %>% filter(p.value>=0.05) %>% pull(term)` does not.
+
+## Cross Validation
+
+To test the model efficiency and its predictory ability, we apply 100 times of cross validation and calculate the mean value of root mean squared errors (RMSE) over 100 CVs.
+
+```{r}
+cv_df = crossv_mc(happy_fit, 100) %>% 
+  mutate(train = map(train,as_tibble),
+         test = map(test, as_tibble)) %>% 
+  mutate(linear_mod = map(train, ~lm(life_ladder ~ ., data = .x)) ) %>% 
   mutate(
-    country_code = countrycode(country_name, "country.name", "iso3c")
-  ) %>% 
-  relocate(country_code)
+    rmse_linear = map2_dbl(linear_mod, test, ~rmse(model = .x, data = .y)) )
 ```
-
-We focused on Year 2018 because we wanted to know the happiness score before COVID-19. Each country's life ladder (happiness) score is shown on the map. 
 
 ```{r}
-plot_2018_map = happy_iso3 %>% 
-  filter(year == 2018) %>% 
-  plot_ly(
-    type = 'choropleth', locations = ~country_code, z = ~life_ladder,
-    text = ~country_name
-  )
-
-plot_2018_map
+ggplot(cv_df,aes(x="linear",y=rmse_linear))+geom_violin()
+mean_rmse = mean(pull(cv_df,rmse_linear))
+mean_rmse
 ```
 
-# Happiness score Rank (2018, bar plot)
+Here we can see the mean RMSE is `mean_rmse`, which is acceptable. Therefore, the model could be used to predict the country's happiness score.
 
-```{r}
-score_rank = 
-  happy_df %>% 
-  filter(year == "2018") %>% 
-  arrange(life_ladder) %>% 
-  mutate(
-    country_name = factor(country_name, levels = country_name)
-  )
-
-score_rank %>% 
-  plot_ly(x = ~life_ladder, y = ~country_name, color = ~country_name, type = "bar", colors = "viridis")
-```
-
-
-# Yearly Trend (line plot)
-```{r}
-yearly_trend = 
-  happy_df %>% 
-  filter(country_name == "Denmark" | country_name == "United States" | country_name == "China" | country_name == "Afghanistan" | country_name == "Mongolia" | country_name == "Haiti") %>% 
-  ggplot(aes(group = country_name, x = year, y = life_ladder, color = country_name)) + geom_point(alpha = .5) + geom_line() 
-
-yearly_trend
-```
-
-
-# Factors Related to Happiness Score
-
-# Regression Model
 
 =======
+---
+title: "Overview"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
 <img src="happiness.jpeg" style="width:100%; border:2px solid">
->>>>>>> aac575065f67da93bb817a439a2404d190803476
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(countrycode)
+library(plotly)
+library(dplyr)
+library(modelr)
+library(mgcv)
+
+Happiness is one of the most important feelings for human beings. In this project, we aimed to find out 
+* what factors affect happiness. 
+* In what way do these factors affect happiness. 
+* How does COVID-19 affect happiness.
+* How to increase happiness score.
+
+# Dataset
+
+
+# Group Members
+* [Jiaqi Chen](https://jchen0000.github.io/)
+* [Xinran Sun]
+* [Yiru Gong]
+* [Yunlin Zhou]
+
+
+## Data Distribution
+
+To identify the significance of relationships and establish a regression model to predict the happiness score, we first take a look on the distribution of each variable.
+
+```{r}
+par(mfrow= c(3,3))
+for (n in 3:ncol(happy_df)){
+  var = names(happy_df)[n]
+  pull(happy_df,n) %>% hist(main=var,xlab=var)
+}
+```
+
+Here our response variable `lie_ladder` follows great bell shape and is relatively non-skewed. Most of the factors are normally distributed. Therefore we can proceed to build regression model.
+
+## Linear regression model
+
+Since all factors are continuous, we can apply fundamental linear regression here.
+
+```{r}
+# General Model
+happy_fit = happy_df %>% 
+  select(-country_name)
+fit = happy_fit %>%
+  mutate(year = as.integer(year)) %>% 
+  lm(life_ladder~., data=.) %>% 
+  broom.mixed::tidy()
+knitr::kable(fit)
+```
+
+The result indicated that `r fit[-1,] %>% filter(p.value<0.05) %>% pull(term)` are all significantly correlated with happiness score, while `r fit[-1,] %>% filter(p.value>=0.05) %>% pull(term)` does not.
+
+## Cross Validation
+
+To test the model efficiency and its predictory ability, we apply 100 times of cross validation and calculate the mean value of root mean squared errors (RMSE) over 100 CVs.
+
+```{r}
+cv_df = crossv_mc(happy_fit, 100) %>% 
+  mutate(train = map(train,as_tibble),
+         test = map(test, as_tibble)) %>% 
+  mutate(linear_mod = map(train, ~lm(life_ladder ~ ., data = .x)) ) %>% 
+  mutate(
+    rmse_linear = map2_dbl(linear_mod, test, ~rmse(model = .x, data = .y)) )
+```
+
+```{r}
+ggplot(cv_df,aes(x="linear",y=rmse_linear))+geom_violin()
+mean_rmse = mean(pull(cv_df,rmse_linear))
+mean_rmse
+```
+
+Here we can see the mean RMSE is `mean_rmse`, which is acceptable. Therefore, the model could be used to predict the country's happiness score.
+
+
+>>>>>>> 9557e959d61b6ac179983018d4789601bee6c4c6

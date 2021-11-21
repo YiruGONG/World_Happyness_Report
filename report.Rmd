@@ -97,3 +97,56 @@ We wanted to see countries' happiness score trend on a yearly base and chose two
 
 # Regression Model
 
+## Data Distribution
+
+To identify the significance of relationships and establish a regression model to predict the happiness score, we first take a look on the distribution of each variable.
+
+```{r}
+par(mfrow= c(3,3))
+for (n in 3:ncol(happy_df)){
+  var = names(happy_df)[n]
+  pull(happy_df,n) %>% hist(main=var,xlab=var)
+}
+```
+
+Here our response variable `lie_ladder` follows great bell shape and is relatively non-skewed. Most of the factors are normally distributed. Therefore we can proceed to build regression model.
+
+## Linear regression model
+
+Since all factors are continuous, we can apply fundamental linear regression here.
+
+```{r}
+# General Model
+happy_fit = happy_df %>% 
+  select(-country_name)
+fit = happy_fit %>%
+  mutate(year = as.integer(year)) %>% 
+  lm(life_ladder~., data=.) %>% 
+  broom.mixed::tidy()
+knitr::kable(fit)
+```
+
+The result indicated that `r fit[-1,] %>% filter(p.value<0.05) %>% pull(term)` are all significantly correlated with happiness score, while `r fit[-1,] %>% filter(p.value>=0.05) %>% pull(term)` does not.
+
+## Cross Validation
+
+To test the model efficiency and its predictory ability, we apply 100 times of cross validation and calculate the mean value of root mean squared errors (RMSE) over 100 CVs.
+
+```{r}
+cv_df = crossv_mc(happy_fit, 100) %>% 
+  mutate(train = map(train,as_tibble),
+         test = map(test, as_tibble)) %>% 
+  mutate(linear_mod = map(train, ~lm(life_ladder ~ ., data = .x)) ) %>% 
+  mutate(
+    rmse_linear = map2_dbl(linear_mod, test, ~rmse(model = .x, data = .y)) )
+```
+
+```{r}
+ggplot(cv_df,aes(x="linear",y=rmse_linear))+geom_violin()
+mean_rmse = mean(pull(cv_df,rmse_linear))
+mean_rmse
+```
+
+Here we can see the mean RMSE is `mean_rmse`, which is acceptable. Therefore, the model could be used to predict the country's happiness score.
+
+
