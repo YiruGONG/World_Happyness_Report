@@ -1,0 +1,46 @@
+---
+title: "Home"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+<<<<<<< HEAD
+```{r setup, include=FALSE}
+library(tidyverse)
+library(countrycode)
+library(plotly)
+library(dplyr)
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+```
+
+Jiaqi Chen (jc5681),
+Xinran Sun (xs2447),
+Yiru Gong (yg2832),
+Yunlin Zhou (yz4184)
+
+## Data Input
+
+```{r}
+covid_df = readxl::read_xlsx('MortalityDataWHR2021C2.xlsx') %>% 
+  drop_na() %>% 
+  janitor::clean_names()
+```
+
+```{r}
+covid_death_rate = covid_df %>% 
+  ggplot(
+    aes(x = country_name, 
+        covid_19_deaths_per_100_000_population_in_2020)) +
+  geom_bar()
+
+covid_death_rate
+```

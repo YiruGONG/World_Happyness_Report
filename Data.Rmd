@@ -11,9 +11,11 @@ All the data are downloaded from [World Happiness Report](https://worldhappiness
 
 * Happiness Data: [Data Panel](https://happiness-report.s3.amazonaws.com/2021/DataPanelWHR2021C2.xls)
 
-This dataset contains 1949 observations of happiness score and related social factors. The data are sourced from 166 different countries range from 2005 to 2020. The GDP variables are provided by World Development Indicators (WDI) and healthy life expectancies are extracted from World Health Organization’s (WHO) Global Health Observatory data repository. All the other factors are gather from the survey of Gallup World Poll. 
+This dataset contains 1949 observations of happiness score and related social factors. The data are sourced from 166 different countries or regions covering years from 2005 to 2020. The GDP variables are provided by World Development Indicators (WDI) and healthy life expectancies are extracted from World Health Organization’s (WHO) Global Health Observatory data repository. All the other factors are gather from the survey of Gallup World Poll. 
 
 * COVID19 related Data: [Mortality Data](https://happiness-report.s3.amazonaws.com/2021/MortalityDataWHR2021C2.xlsx)
+
+
 
 ## Data Processing and Cleaning
 
