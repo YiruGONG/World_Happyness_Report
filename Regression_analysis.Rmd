@@ -1,0 +1,57 @@
+---
+title: "Regression Analysis"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(modelr)
+library(mgcv)
+```
+
+## Data Input
+
+```{r}
+happy_df = readxl::read_xls('DataPanelWHR2021C2.xls') %>% 
+  janitor::clean_names()
+```
+
+## Data Distribution
+
+```{r}
+par(mfrow= c(3,3))
+for (n in 3:ncol(happy_df)){
+  var = names(happy_df)[n]
+  pull(happy_df,n) %>% hist(main=var,xlab=var)
+}
+```
+
+## Linear regression model
+
+```{r}
+# General Model
+happy_fit = happy_df %>% 
+  select(-country_name)
+fit = happy_fit %>%
+  mutate(year = as.integer(year)) %>% 
+  lm(life_ladder~., data=.)
+broom.mixed::tidy(fit) %>% 
+  knitr::kable()
+```
+
+## Cross Validation
+
+```{r}
+cv_df = crossv_mc(happy_fit, 100) %>% 
+  mutate(train = map(train,as_tibble),
+         test = map(test, as_tibble)) %>% 
+  mutate(linear_mod = map(train, ~lm(life_ladder ~ ., data = .x)) ) %>% 
+  mutate(
+    rmse_linear = map2_dbl(linear_mod, test, ~rmse(model = .x, data = .y)) )
+```
+
+```{r}
+ggplot(cv_df,aes(x="linear",y=rmse_linear))+geom_violin()
+mean(pull(cv_df,rmse_linear))
+```
+

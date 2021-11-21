@@ -17,7 +17,6 @@ Yunlin Zhou (yz4184)
 ```{r}
 happy_df = readxl::read_xls('DataPanelWHR2021C2.xls') %>% 
   janitor::clean_names()
-
 ```
 
 
