@@ -12,6 +12,15 @@ Xinran Sun (xs2447),
 Yiru Gong (yg2832),
 Yunlin Zhou (yz4184)
 
+## Data Input
+
+```{r}
+happy_df = readxl::read_xls('DataPanelWHR2021C2.xls') %>% 
+  janitor::clean_names()
+
+```
+
+
 # World map of Happiness
 
 # Happiness score Rank (2018)
@@ -24,3 +33,4 @@ line plot
 # Factors Related to Happiness Score
 
 # Regression Model
+
