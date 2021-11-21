@@ -5,7 +5,6 @@ output: html_document
 
 ```{r setup, include=FALSE}
 library(tidyverse)
-<<<<<<< HEAD
 library(countrycode)
 library(plotly)
 
@@ -16,10 +15,8 @@ options(
 
 scale_colour_discrete = scale_colour_viridis_d
 scale_fill_discrete = scale_fill_viridis_d
-=======
 library(plotly)
 library(dplyr)
->>>>>>> e31ad3762c7df74323a590a1f036b277d5212db8
 ```
 
 Jiaqi Chen (jc5681),
@@ -62,9 +59,9 @@ plot_2018_map
 ```
 
 # Happiness score Rank
-barplot
+
 =======
-# Happiness score Rank (2018, bar plot)
+
 ```{r}
 score_rank = 
   happy_df %>% 
@@ -85,8 +82,10 @@ yearly_trend =
   happy_df %>% 
   filter(country_name == "Denmark" | country_name == "United States" | country_name == "China" | country_name == "Afghanistan" | country_name == "Mongolia" | country_name == "Haiti") %>% 
   ggplot(aes(group = country_name, x = year, y = life_ladder, color = country_name)) + geom_point(alpha = .5) + geom_line() 
+
+yearly_trend
 ```
->>>>>>> e31ad3762c7df74323a590a1f036b277d5212db8
+
 
 
 # Factors Related to Happiness Score
