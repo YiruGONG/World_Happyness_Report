@@ -7,6 +7,14 @@ output:
 ---
 ## Data Sources
 
+All the data are downloaded from [World Happiness Report](https://worldhappiness.report/ed/2021/#appendices-and-data): 
+
+* Happiness Data: [Data Panel](https://happiness-report.s3.amazonaws.com/2021/DataPanelWHR2021C2.xls)
+
+This dataset contains 1949 observations of happiness score and related social factors. The data are sourced from 166 different countries range from 2005 to 2020. The GDP variables are provided by World Development Indicators (WDI) and healthy life expectancies are extracted from World Health Organization’s (WHO) Global Health Observatory data repository. All the other factors are gather from the survey of Gallup World Poll. 
+
+* COVID19 related Data: [Mortality Data](https://happiness-report.s3.amazonaws.com/2021/MortalityDataWHR2021C2.xlsx)
+
 ## Data Processing and Cleaning
 
 ## Data Description
@@ -15,7 +23,7 @@ output:
 * `country_name`: country name in country name (English) format.
 * `year`: the year of the measurements on that row.
 * `life_ladder`: happiness score.
-* `log_gdp_per_capita`: the statistics of GDP per capita pf each country.
+* `log_gdp_per_capita`: the statistics of GDP per capita in purchasing power parity.
 * `social_support`: national average of social support data.
 * `healthy_life_expectancy_at_birth`: healthy life expectancy at birth
 * `freedom_to_make_life_choices`: national average freedom to make life choices. 

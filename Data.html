@@ -368,6 +368,14 @@ div.tocify {
 
 <div id="data-sources" class="section level2">
 <h2>Data Sources</h2>
+<p>All the data are downloaded from <a href="https://worldhappiness.report/ed/2021/#appendices-and-data">World Happiness Report</a>:</p>
+<ul>
+<li>Happiness Data: <a href="https://happiness-report.s3.amazonaws.com/2021/DataPanelWHR2021C2.xls">Data Panel</a></li>
+</ul>
+<p>This dataset contains 1949 observations of happiness score and related social factors. The data are sourced from 166 different countries range from 2005 to 2020. The GDP variables are provided by World Development Indicators (WDI) and healthy life expectancies are extracted from World Health Organization’s (WHO) Global Health Observatory data repository. All the other factors are gather from the survey of Gallup World Poll.</p>
+<ul>
+<li>COVID19 related Data: <a href="https://happiness-report.s3.amazonaws.com/2021/MortalityDataWHR2021C2.xlsx">Mortality Data</a></li>
+</ul>
 </div>
 <div id="data-processing-and-cleaning" class="section level2">
 <h2>Data Processing and Cleaning</h2>
@@ -379,7 +387,7 @@ div.tocify {
 <li><code>country_name</code>: country name in country name (English) format.</li>
 <li><code>year</code>: the year of the measurements on that row.</li>
 <li><code>life_ladder</code>: happiness score.</li>
-<li><code>log_gdp_per_capita</code>: the statistics of GDP per capita pf each country.</li>
+<li><code>log_gdp_per_capita</code>: the statistics of GDP per capita in purchasing power parity.</li>
 <li><code>social_support</code>: national average of social support data.</li>
 <li><code>healthy_life_expectancy_at_birth</code>: healthy life expectancy at birth</li>
 <li><code>freedom_to_make_life_choices</code>: national average freedom to make life choices.</li>
