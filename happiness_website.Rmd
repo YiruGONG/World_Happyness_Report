@@ -6,4 +6,4 @@ output:
     toc_float: true
 ---
 
-Home Page
+<img src="happiness.jpeg" style="width:100%; border:2px solid">
