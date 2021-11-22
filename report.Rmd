@@ -1,6 +1,10 @@
 ---
 title: "Report"
-output: html_document
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
 ---
 
 ```{r setup, include=FALSE}
@@ -25,6 +29,14 @@ Xinran Sun (xs2447),
 Yiru Gong (yg2832),
 Yunlin Zhou (yz4184)
 
+# Motivation
+
+## Motivating Sources
+
+# Questions
+
+# Data
+
 ## Data Input
 
 ```{r}
@@ -32,7 +44,9 @@ happy_df = readxl::read_xls('DataPanelWHR2021C2.xls') %>%
   janitor::clean_names()
 ```
 
-# World map of Happiness
+# Exploratory analysis
+
+## World map of Happiness
 
 Install countrycode package using `install.packages("countrycode")` if needed.
 
@@ -64,7 +78,7 @@ plot_2018_map
 
 
 
-# Happiness Score Rank in 2018
+## Happiness Score Rank in 2018
 
 ```{r}
 score_rank = 
@@ -82,7 +96,7 @@ score_rank %>%
 We used data of 2018 to plot this graph because we wanted to know people's happiness rank before COVID-19 started. Before COVID-19 emerged, Denmark had the highest happiness score, while Afghanistan had the lowest happiness score.
 
 
-# Yearly Trend
+## Yearly Trend
 
 ```{r}
 yearly_trend = 
@@ -96,7 +110,7 @@ yearly_trend
 We wanted to see countries' happiness score trend on a yearly base and chose two countries from each of three groups: high-happiness-score group, medium-happiness-score group, and low-happiness-score group to plot this graph. The selected countries are Denmark, United States, China, Mongolia, Afghanistan, and Haiti. We saw that the happiness score of countries from high-happiness-score group tends to stay stable over years and go slightly lower during COVID-19 period. The happiness score of countries from medium-happiness-score group tends to increase over years and keep increasing during COVID-19 period. The happiness score of countries from low-happiness-score group tends to fluctuate over years and decrease during COVID-19 period.
 
 
-# Factors Related to Happiness Score
+## Factors Related to Happiness Score
 
 
 ```{r message = FALSE, warning = FALSE}
@@ -159,7 +173,7 @@ library(patchwork)
 
 As shown in the plots, all the factors are related to the happiness score. People would feel happy if the country they live in have high GDP, strong social support, high life expectancy, and they could be free to make life choices, also the country is generous and  offering positive affect. On the contrary, if a country has a corrupt government and offers negative affect, people wouldn't have a happy life.
 
-# Regression Model
+# Additional analysis
 
 To identify the significance of relationships and establish a regression model to predict the happiness score, we first take a look on the distribution of each variable.
 
@@ -210,6 +224,7 @@ mean_rmse = mean(pull(cv_df,rmse_linear))
 mean_rmse
 ```
 
-Here we can see the mean RMSE is `mean_rmse`, which is acceptable. Therefore, the model could be used to predict the country's happiness score.
+Here we can see the mean RMSE is `r mean_rmse`, which is acceptable. Therefore, the model could be used to predict the country's happiness score.
 
+# Discussion
 
