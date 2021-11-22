@@ -2,19 +2,26 @@ name: "Happiness Website"
 output_dir: "."
 navbar:
   title: "Overview"
-  right:
+  left:
     - text: "Data Exploration"
-      href: exploration.html
+      menu:
+      - text: "Happiness Worldwide"
+        href: worldwide.html
+      - text: "..."
+        href: other.html
     - text: "Data Analysis"
-      href: analysis.html
+      href: Regression_analysis.html
     - text: "Map"
       href: map.html
     - text: "Data"
-      href: data.html
+      href: data.html 
+  right:
     - text: "About"
-      href: Proposal.html
-    - text: "Report"
-      href : report.html
+      menu:
+      - text: "Proposal"
+        href: Proposal.html
+      - text: "Report"
+        href : report.html
     - icon: fa-envelope fa-lg
       href: mailto:<xs2447@cumc.columbia.edu>
     - icon: fa-github fa-lg

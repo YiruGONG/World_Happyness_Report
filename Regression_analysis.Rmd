@@ -1,6 +1,10 @@
 ---
 title: "Regression Analysis"
-output: html_document
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
 ---
 
 ```{r setup, include=FALSE}
@@ -37,9 +41,8 @@ Since all factors are continuous, we can apply fundamental linear regression her
 ```{r}
 # General Model
 happy_fit = happy_df %>% 
-  select(-country_name)
+  select(-country_name,-year)
 fit = happy_fit %>%
-  mutate(year = as.integer(year)) %>% 
   lm(life_ladder~., data=.) %>% 
   broom.mixed::tidy()
 knitr::kable(fit)
@@ -52,6 +55,8 @@ The result indicated that `r fit[-1,] %>% filter(p.value<0.05) %>% pull(term)` a
 To test the model efficiency and its predictory ability, we apply 100 times of cross validation and calculate the mean value of root mean squared errors (RMSE) over 100 CVs.
 
 ```{r}
+set.seed(1)
+
 cv_df = crossv_mc(happy_fit, 100) %>% 
   mutate(train = map(train,as_tibble),
          test = map(test, as_tibble)) %>% 
@@ -66,4 +71,5 @@ mean_rmse = mean(pull(cv_df,rmse_linear))
 mean_rmse
 ```
 
-Here we can see the mean RMSE is `mean_rmse`, which is acceptable. Therefore, the model could be used to predict the country's happiness score.
+Here we can see the mean RMSE is `r mean_rmse`, which is acceptable. Therefore, the model could be used to predict the country's happiness score.
+

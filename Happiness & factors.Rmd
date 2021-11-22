@@ -55,7 +55,7 @@ happy_B%>%
     text = ~text_label,
     alpha = 0.5
   )%>%
-  add_lines(x = ~B, y = predict(fit_B))%>%
+  add_lines(x = ~B, y = predict(fit_B), color = NULL)%>%
   layout(
     xaxis = list(title = name), yaxis = list(title = "Happiness score")
   )
@@ -74,6 +74,7 @@ plot_healthy = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$healthy_lif
 plot_healthy
 
 plot_freedom = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$freedom_to_make_life_choices, name = "freedom_to_make_life_choices")
+plot_freedom
 
 plot_generosity = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$generosity, name = "generosity")
 plot_generosity
