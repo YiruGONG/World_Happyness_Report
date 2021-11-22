@@ -10,7 +10,7 @@ navbar:
       - text: "..."
         href: other.html
     - text: "Data Analysis"
-      href: regression_analysis.html
+      href: Regression_analysis.html
     - text: "Map"
       href: map.html
     - text: "Data"
