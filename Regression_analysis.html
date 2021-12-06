@@ -421,9 +421,11 @@ for (n in 3:ncol(happy_df)){
 happy_fit = happy_df %&gt;% 
   select(-country_name,-year)
 fit = happy_fit %&gt;%
-  lm(life_ladder~., data=.) %&gt;% 
+  lm(life_ladder~., data=.)
+fit_est = fit %&gt;% 
   broom.mixed::tidy()
-knitr::kable(fit)</code></pre>
+
+knitr::kable(fit_est)</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -502,6 +504,14 @@ knitr::kable(fit)</code></pre>
 </table>
 <p>The result indicated that log_gdp_per_capita, social_support, healthy_life_expectancy_at_birth, freedom_to_make_life_choices, generosity, perceptions_of_corruption, positive_affect are all significantly correlated with happiness score, while negative_affect does not.</p>
 </div>
+<div id="model-diagnostic" class="section level2">
+<h2>Model diagnostic</h2>
+<p>To test if the model follows assumption of normal distribution, we could plot the QQ plots and related diagnostic plots.</p>
+<pre class="r"><code>par(mfrow=c(2,2))
+plot(fit)</code></pre>
+<p><img src="Regression_analysis_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>The majority of data follows normal distribution, thus we could go on.</p>
+</div>
 <div id="cross-validation" class="section level2">
 <h2>Cross Validation</h2>
 <p>To test the model efficiency and its predictory ability, we apply 100 times of cross validation and calculate the mean value of root mean squared errors (RMSE) over 100 CVs.</p>
@@ -514,11 +524,14 @@ cv_df = crossv_mc(happy_fit, 100) %&gt;%
   mutate(
     rmse_linear = map2_dbl(linear_mod, test, ~rmse(model = .x, data = .y)) )</code></pre>
 <pre class="r"><code>ggplot(cv_df,aes(x=&quot;linear&quot;,y=rmse_linear))+geom_violin()</code></pre>
-<p><img src="Regression_analysis_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="Regression_analysis_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <pre class="r"><code>mean_rmse = mean(pull(cv_df,rmse_linear))
 mean_rmse</code></pre>
 <pre><code>## [1] 0.5472725</code></pre>
 <p>Here we can see the mean RMSE is 0.5472725, which is acceptable. Therefore, the model could be used to predict the country’s happiness score.</p>
+</div>
+<div id="model-interpretation" class="section level2">
+<h2>Model Interpretation</h2>
 </div>
 
 

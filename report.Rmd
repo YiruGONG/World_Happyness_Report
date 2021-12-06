@@ -189,7 +189,7 @@ Here our response variable `lie_ladder` follows great bell shape and is relative
 
 ## Linear regression model
 
-Since all factors are continuous, we can apply fundamental linear regression here.
+Since all factors are continuous, we can apply fundamental multivariable linear regression (MLR) here.
 
 ```{r}
 # General Model
