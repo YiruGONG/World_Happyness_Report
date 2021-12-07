@@ -58,12 +58,39 @@ Through the early stage of our study, we came up with a few questions based on t
 
 # Data Source
 
+All the data are downloaded from [World Happiness Report](https://worldhappiness.report/ed/2021/#appendices-and-data): 
+
+* Happiness Data: [Data Panel](https://happiness-report.s3.amazonaws.com/2021/DataPanelWHR2021C2.xls)
+
+This dataset contains 1949 observations of happiness score and related social factors. The data are sourced from 166 different countries or regions covering years from 2005 to 2020. The GDP variables are provided by World Development Indicators (WDI) and healthy life expectancies are extracted from World Health Organization’s (WHO) Global Health Observatory data repository. All the other factors are gather from the survey of Gallup World Poll. 
+
+<br>
+
+## Data Cleaning
 
 ```{r}
 happy_df = readxl::read_xls('DataPanelWHR2021C2.xls') %>% 
   janitor::clean_names()
 ```
 
+We Used `janitor::clean_names` to clean the data names. In order use plotly map to show the world happiness score in each country, it is necessary to change the full name of the English country to the ISO3 abbreviation form, which is the three-letter abbreviation form of the country name. Therefore, we downloaded the package [countrycode](https://vincentarelbundock.github.io/countrycode/) to help us do the transformation. The resulting data file of `happy_iso3` contains a single dataframe with 1931 rows of data on 12 variables. The detailed information about each variables is listed in following section.
+
+<br>
+
+## Data Description
+
+* `country_code`: country name in iso3 code format.
+* `country_name`: country name in country name (English) format.
+* `year`: the year of the measurements on that row.
+* `life_ladder`: happiness score.
+* `log_gdp_per_capita`: the statistics of GDP per capita in purchasing power parity.
+* `social_support`: national average of social support data.
+* `healthy_life_expectancy_at_birth`: healthy life expectancy at birth
+* `freedom_to_make_life_choices`: national average freedom to make life choices. 
+* `generosity`: the residual of regressing national average of donation on GDP per capita.
+* `perceptions_of_corruption`: national average of corrpution perceptions score.
+* `positive_affect`: average of three positive affect measures in GWP: happiness, laugh and enjoyment.
+* `negative_affect`: average of three negative affect measures in GWP: worry, sadness and anger.
 
 <br>
 
@@ -72,7 +99,7 @@ In this part, we analyzed the basic patterns and characteristics of happiness. W
 
 <br>
 
-## World map of Happiness
+## World Map of Happiness
 
 We decided to use `plotly` to show the happiness score around the world. We added a `country_code` column which provides the iso3 code of each country because plotly need iso3 country code (3-letter abbreviations of country names) to draw country map. We also deleted Kosovo and Somaliland region because they do not have corresponding iso3 code. 
 
@@ -134,6 +161,7 @@ yearly_trend
 
 
 <br>
+
 ## Factors Related to Happiness Score
 
 To better explore the relationship between all the factors and happiness score, we used the `ggplot` and `plotly` to visualize the data and present the linear regression.
