@@ -1,6 +1,10 @@
 ---
 title: "Regression Analysis"
-output: html_document
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
 ---
 
 ```{r setup, include=FALSE}
@@ -37,21 +41,35 @@ Since all factors are continuous, we can apply fundamental linear regression her
 ```{r}
 # General Model
 happy_fit = happy_df %>% 
-  select(-country_name)
+  select(-country_name,-year)
 fit = happy_fit %>%
-  mutate(year = as.integer(year)) %>% 
-  lm(life_ladder~., data=.) %>% 
+  lm(life_ladder~., data=.)
+fit_est = fit %>% 
   broom.mixed::tidy()
-knitr::kable(fit)
+
+knitr::kable(fit_est)
 ```
 
-The result indicated that `r fit[-1,] %>% filter(p.value<0.05) %>% pull(term)` are all significantly correlated with happiness score, while `r fit[-1,] %>% filter(p.value>=0.05) %>% pull(term)` does not.
+The result indicated that `r fit_est[-1,] %>% filter(p.value<0.05) %>% pull(term)` are all significantly correlated with happiness score, while `r fit_est[-1,] %>% filter(p.value>=0.05) %>% pull(term)` does not.
+
+## Model diagnostic
+
+To test if the model follows assumption of normal distribution, we could plot the QQ plots and related diagnostic plots.
+
+```{r}
+par(mfrow=c(2,2))
+plot(fit)
+```
+
+The majority of data follows normal distribution, thus we could go on.
 
 ## Cross Validation
 
 To test the model efficiency and its predictory ability, we apply 100 times of cross validation and calculate the mean value of root mean squared errors (RMSE) over 100 CVs.
 
 ```{r}
+set.seed(1)
+
 cv_df = crossv_mc(happy_fit, 100) %>% 
   mutate(train = map(train,as_tibble),
          test = map(test, as_tibble)) %>% 
@@ -66,4 +84,7 @@ mean_rmse = mean(pull(cv_df,rmse_linear))
 mean_rmse
 ```
 
-Here we can see the mean RMSE is `mean_rmse`, which is acceptable. Therefore, the model could be used to predict the country's happiness score.
+Here we can see the mean RMSE is `r mean_rmse`, which is acceptable. Therefore, the model could be used to predict the country's happiness score.
+
+## Model Interpretation
+

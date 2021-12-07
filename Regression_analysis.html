@@ -29,7 +29,11 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
@@ -217,7 +221,73 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
 
 
 
@@ -227,6 +297,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -243,14 +323,23 @@ $(document).ready(function () {
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="exploration.html">Data Exploration</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Data Exploration
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="worldwide.html">Happiness Worldwide</a>
+    </li>
+    <li>
+      <a href="other.html">...</a>
+    </li>
+  </ul>
 </li>
 <li>
-  <a href="analysis.html">Data Analysis</a>
+  <a href="regression_analysis.html">Data Analysis</a>
 </li>
 <li>
   <a href="map.html">Map</a>
@@ -258,11 +347,22 @@ $(document).ready(function () {
 <li>
   <a href="data.html">Data</a>
 </li>
-<li>
-  <a href="Proposal.html">About</a>
-</li>
-<li>
-  <a href="report.html">Report</a>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    About
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Proposal.html">Proposal</a>
+    </li>
+    <li>
+      <a href="report.html">Report</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="mailto:&lt;xs2447@cumc.columbia.edu&gt;">
@@ -283,6 +383,14 @@ $(document).ready(function () {
 
 <div id="header">
 
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore">Regression Analysis</h1>
@@ -297,23 +405,27 @@ $(document).ready(function () {
 </div>
 <div id="data-distribution" class="section level2">
 <h2>Data Distribution</h2>
+<p>To identify the significance of relationships and establish a regression model to predict the happiness score, we first take a look on the distribution of each variable.</p>
 <pre class="r"><code>par(mfrow= c(3,3))
 for (n in 3:ncol(happy_df)){
   var = names(happy_df)[n]
   pull(happy_df,n) %&gt;% hist(main=var,xlab=var)
 }</code></pre>
 <p><img src="Regression_analysis_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Here our response variable <code>lie_ladder</code> follows great bell shape and is relatively non-skewed. Most of the factors are normally distributed. Therefore we can proceed to build regression model.</p>
 </div>
 <div id="linear-regression-model" class="section level2">
 <h2>Linear regression model</h2>
+<p>Since all factors are continuous, we can apply fundamental linear regression here.</p>
 <pre class="r"><code># General Model
 happy_fit = happy_df %&gt;% 
-  select(-country_name)
+  select(-country_name,-year)
 fit = happy_fit %&gt;%
-  mutate(year = as.integer(year)) %&gt;% 
   lm(life_ladder~., data=.)
-broom.mixed::tidy(fit) %&gt;% 
-  knitr::kable()</code></pre>
+fit_est = fit %&gt;% 
+  broom.mixed::tidy()
+
+knitr::kable(fit_est)</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -327,93 +439,105 @@ broom.mixed::tidy(fit) %&gt;%
 <tbody>
 <tr class="odd">
 <td align="left">(Intercept)</td>
-<td align="right">21.4382352</td>
-<td align="right">7.1735948</td>
-<td align="right">2.988493</td>
-<td align="right">0.0028438</td>
+<td align="right">-2.5253237</td>
+<td align="right">0.1862968</td>
+<td align="right">-13.5553776</td>
+<td align="right">0.0000000</td>
 </tr>
 <tr class="even">
-<td align="left">year</td>
-<td align="right">-0.0119651</td>
-<td align="right">0.0035806</td>
-<td align="right">-3.341643</td>
-<td align="right">0.0008509</td>
-</tr>
-<tr class="odd">
 <td align="left">log_gdp_per_capita</td>
-<td align="right">0.3751884</td>
-<td align="right">0.0255005</td>
-<td align="right">14.712983</td>
+<td align="right">0.3823714</td>
+<td align="right">0.0254857</td>
+<td align="right">15.0034000</td>
 <td align="right">0.0000000</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">social_support</td>
-<td align="right">1.8270579</td>
-<td align="right">0.1747869</td>
-<td align="right">10.453060</td>
+<td align="right">1.8444740</td>
+<td align="right">0.1752311</td>
+<td align="right">10.5259501</td>
 <td align="right">0.0000000</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">healthy_life_expectancy_at_birth</td>
-<td align="right">0.0284663</td>
-<td align="right">0.0034962</td>
-<td align="right">8.141993</td>
+<td align="right">0.0267282</td>
+<td align="right">0.0034677</td>
+<td align="right">7.7078655</td>
 <td align="right">0.0000000</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">freedom_to_make_life_choices</td>
-<td align="right">0.5220503</td>
-<td align="right">0.1362583</td>
-<td align="right">3.831327</td>
-<td align="right">0.0001321</td>
+<td align="right">0.3900271</td>
+<td align="right">0.1307944</td>
+<td align="right">2.9819865</td>
+<td align="right">0.0029046</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">generosity</td>
-<td align="right">0.3867043</td>
-<td align="right">0.0925949</td>
-<td align="right">4.176300</td>
-<td align="right">0.0000311</td>
+<td align="right">0.4195941</td>
+<td align="right">0.0923454</td>
+<td align="right">4.5437459</td>
+<td align="right">0.0000059</td>
+</tr>
+<tr class="odd">
+<td align="left">perceptions_of_corruption</td>
+<td align="right">-0.6997192</td>
+<td align="right">0.0879900</td>
+<td align="right">-7.9522603</td>
+<td align="right">0.0000000</td>
 </tr>
 <tr class="even">
-<td align="left">perceptions_of_corruption</td>
-<td align="right">-0.7049676</td>
-<td align="right">0.0877420</td>
-<td align="right">-8.034555</td>
+<td align="left">positive_affect</td>
+<td align="right">1.9879308</td>
+<td align="right">0.1700964</td>
+<td align="right">11.6870863</td>
 <td align="right">0.0000000</td>
 </tr>
 <tr class="odd">
-<td align="left">positive_affect</td>
-<td align="right">1.9374334</td>
-<td align="right">0.1702616</td>
-<td align="right">11.379153</td>
-<td align="right">0.0000000</td>
-</tr>
-<tr class="even">
 <td align="left">negative_affect</td>
-<td align="right">0.3297062</td>
-<td align="right">0.1909926</td>
-<td align="right">1.726278</td>
-<td align="right">0.0844794</td>
+<td align="right">0.1853176</td>
+<td align="right">0.1865965</td>
+<td align="right">0.9931458</td>
+<td align="right">0.3207803</td>
 </tr>
 </tbody>
 </table>
+<p>The result indicated that log_gdp_per_capita, social_support, healthy_life_expectancy_at_birth, freedom_to_make_life_choices, generosity, perceptions_of_corruption, positive_affect are all significantly correlated with happiness score, while negative_affect does not.</p>
+</div>
+<div id="model-diagnostic" class="section level2">
+<h2>Model diagnostic</h2>
+<p>To test if the model follows assumption of normal distribution, we could plot the QQ plots and related diagnostic plots.</p>
+<pre class="r"><code>par(mfrow=c(2,2))
+plot(fit)</code></pre>
+<p><img src="Regression_analysis_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>The majority of data follows normal distribution, thus we could go on.</p>
 </div>
 <div id="cross-validation" class="section level2">
 <h2>Cross Validation</h2>
-<pre class="r"><code>cv_df = crossv_mc(happy_fit, 100) %&gt;% 
+<p>To test the model efficiency and its predictory ability, we apply 100 times of cross validation and calculate the mean value of root mean squared errors (RMSE) over 100 CVs.</p>
+<pre class="r"><code>set.seed(1)
+
+cv_df = crossv_mc(happy_fit, 100) %&gt;% 
   mutate(train = map(train,as_tibble),
          test = map(test, as_tibble)) %&gt;% 
   mutate(linear_mod = map(train, ~lm(life_ladder ~ ., data = .x)) ) %&gt;% 
   mutate(
     rmse_linear = map2_dbl(linear_mod, test, ~rmse(model = .x, data = .y)) )</code></pre>
 <pre class="r"><code>ggplot(cv_df,aes(x=&quot;linear&quot;,y=rmse_linear))+geom_violin()</code></pre>
-<p><img src="Regression_analysis_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<pre class="r"><code>mean(pull(cv_df,rmse_linear))</code></pre>
-<pre><code>## [1] 0.5454281</code></pre>
+<p><img src="Regression_analysis_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>mean_rmse = mean(pull(cv_df,rmse_linear))
+mean_rmse</code></pre>
+<pre><code>## [1] 0.5472725</code></pre>
+<p>Here we can see the mean RMSE is 0.5472725, which is acceptable. Therefore, the model could be used to predict the country’s happiness score.</p>
+</div>
+<div id="model-interpretation" class="section level2">
+<h2>Model Interpretation</h2>
 </div>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -445,7 +569,41 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

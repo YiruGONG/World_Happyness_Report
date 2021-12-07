@@ -14,6 +14,10 @@ library(plotly)
 library(dplyr)
 library(modelr)
 library(mgcv)
+<<<<<<< HEAD
+=======
+
+>>>>>>> daf6c944e872f9101e978f239a66f47722184d1a
 options(
   ggplot2.continuous.colour = "viridis",
   ggplot2.continuous.fill = "viridis"
@@ -111,11 +115,19 @@ We wanted to see countries' happiness score trend on a yearly base and chose two
 ```{r message = FALSE, warning = FALSE}
 happy_df_fac = happy_df%>%
   filter(year < 2019)
+<<<<<<< HEAD
+=======
+
+>>>>>>> daf6c944e872f9101e978f239a66f47722184d1a
 round2 = function(x){
   if(is.numeric(x))
   x= round(x, digits = 2)
   return(x)
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> daf6c944e872f9101e978f239a66f47722184d1a
 happy_df_fac = map_dfc(happy_df_fac, round2)%>%
   mutate(year = as.character(year))
 ```
@@ -133,6 +145,7 @@ gg_factor = function(A,B,name){
 ```
 
 ```{r message = FALSE, warning = FALSE}
+<<<<<<< HEAD
 gg_log = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$log_gdp_per_capita, name = "log_gdp_per_capita")
 gg_social = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$social_support, name = "social_support")
 gg_healthy = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$healthy_life_expectancy_at_birth, name = "healthy_life_expectancy_at_birth")
@@ -150,6 +163,41 @@ library(patchwork)
 
 As shown in the plots, all the factors are related to the happiness score. People would feel happy if the country they live in have high GDP, strong social support, high life expectancy, and they could be free to make life choices, also the country is generous and  offering positive affect. On the contrary, if a country has a corrupt government and offers negative affect, people wouldn't have a happy life.
 
+=======
+
+gg_log = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$log_gdp_per_capita, name = "log_gdp_per_capita")
+
+
+gg_social = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$social_support, name = "social_support")
+
+
+gg_healthy = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$healthy_life_expectancy_at_birth, name = "healthy_life_expectancy_at_birth")
+
+
+gg_freedom = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$freedom_to_make_life_choices, name = "freedom_to_make_life_choices")
+
+
+gg_generosity = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$generosity, name = "generosity")
+
+
+gg_perceptions = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$perceptions_of_corruption, name = "perceptions_of_corruption")
+
+
+gg_positive = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$positive_affect, name = "positive_affect")
+
+
+gg_negative = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$negative_affect, name = "negative_affect")
+
+```
+
+```{r fig.height = 12, fig.width = 8, message = FALSE, warning = FALSE}
+library(patchwork)
+(gg_log + gg_social + gg_healthy +gg_freedom ) / (gg_generosity + gg_perceptions + gg_positive + gg_negative)
+```
+
+As shown in the plots, all the factors are related to the happiness score. People would feel happy if the country they live in have high GDP, strong social support, high life expectancy, and they could be free to make life choices, also the country is generous and  offering positive affect. On the contrary, if a country has a corrupt government and offers negative affect, people wouldn't have a happy life.
+
+>>>>>>> daf6c944e872f9101e978f239a66f47722184d1a
 # Additional analysis
 
 To identify the significance of relationships and establish a regression model to predict the happiness score, we first take a look on the distribution of each variable.
@@ -186,6 +234,10 @@ To test the model efficiency and its predictory ability, we apply 100 times of c
 
 ```{r}
 set.seed(1)
+<<<<<<< HEAD
+=======
+
+>>>>>>> daf6c944e872f9101e978f239a66f47722184d1a
 cv_df = crossv_mc(happy_fit, 100) %>% 
   mutate(train = map(train,as_tibble),
          test = map(test, as_tibble)) %>% 

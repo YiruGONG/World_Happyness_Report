@@ -8,17 +8,9 @@ output:
 
 <img src="happiness.jpeg" style="width:100%; border:2px solid">
 
-```{r setup, include=FALSE}
-library(tidyverse)
-library(countrycode)
-library(plotly)
-library(dplyr)
-library(modelr)
-library(mgcv)
-```
+Happiness is one of the most important feelings for human beings. In this project, we aimed to find out:
 
-Happiness is one of the most important feelings for human beings. In this project, we aimed to find out 
-* what factors affect happiness. 
+* What factors affect happiness. 
 * In what way do these factors affect happiness. 
 * How does COVID-19 affect happiness.
 * How to increase happiness score.
@@ -28,7 +20,7 @@ Happiness is one of the most important feelings for human beings. In this projec
 
 # Group Members
 * [Jiaqi Chen](https://jchen0000.github.io/)
-* [Xinran Sun]
-* [Yiru Gong]
-* [Yunlin Zhou]
+* [Xinran Sun](https://xsun0828.github.io/xs2447.github.io/)
+* [Yiru Gong](https://yirugong.github.io/)
+* [Yunlin Zhou](https://yunlin-zhou.github.io/P8105_hw4_yz4184.github.io/)
 
