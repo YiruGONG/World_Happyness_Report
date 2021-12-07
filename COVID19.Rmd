@@ -1,12 +1,11 @@
 ---
-title: "Home"
+title: "COVID19"
 output: 
   html_document:
     toc: true
     toc_float: true
 ---
 
-<<<<<<< HEAD
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(countrycode)
@@ -37,10 +36,27 @@ covid_df = readxl::read_xlsx('MortalityDataWHR2021C2.xlsx') %>%
 
 ```{r}
 covid_death_rate = covid_df %>% 
-  ggplot(
-    aes(x = country_name, 
-        covid_19_deaths_per_100_000_population_in_2020)) +
-  geom_bar()
+  plot_ly(x = ~country_name, 
+         y = ~covid_19_deaths_per_100_000_population_in_2020,
+         type = "bar", colors = "viridis")
 
 covid_death_rate
 ```
+
+```{r}
+death_trend_top = covid_df %>% 
+  filter(covid_19_deaths_per_100_000_population_in_2020 > 100) %>% 
+  pivot_longer(
+    all_cause_death_count_2017:all_cause_death_count_2020,
+    names_to = 'year',
+    values_to = 'death',
+    names_prefix = 'all_cause_death_count_'
+  ) %>% 
+  plot_ly(x = ~year, y = ~death, type = 'scatter', mode = 'lines', text = ~country_name, color = ~country_name)
+
+death_trend_top
+```
+
+
+
+
