@@ -14,10 +14,7 @@ library(plotly)
 library(dplyr)
 library(modelr)
 library(mgcv)
-<<<<<<< HEAD
-=======
 
->>>>>>> 3bfada5e5cc5047dc73f7e8a9ced94e6d6be93b0
 options(
   ggplot2.continuous.colour = "viridis",
   ggplot2.continuous.fill = "viridis"
@@ -142,30 +139,24 @@ yearly_trend
 To better explore the relationship between all the factors and happiness score, we used the `ggplot` and `plotly` to visualize the data and present the linear regression.
 
 ```{r message = FALSE, warning = FALSE}
-happy_df_fac = happy_df%>%
+happy_df_fac = happy_df %>%
   filter(year < 2019)
-<<<<<<< HEAD
-=======
 
->>>>>>> 3bfada5e5cc5047dc73f7e8a9ced94e6d6be93b0
 round2 = function(x){
-  if(is.numeric(x))
-  x= round(x, digits = 2)
+  if (is.numeric(x))
+  x = round(x, digits = 2)
   return(x)
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> 3bfada5e5cc5047dc73f7e8a9ced94e6d6be93b0
-happy_df_fac = map_dfc(happy_df_fac, round2)%>%
+happy_df_fac = map_dfc(happy_df_fac, round2) %>%
   mutate(year = as.character(year))
 ```
 
 ```{r message = FALSE, warning = FALSE}
 gg_factor = function(A,B,name){
-  ggplot(happy_df_fac, aes(x = A, y = B))+
-    geom_point(aes(color = year))+
-    geom_smooth(method = "lm")+
+  ggplot(happy_df_fac, aes(x = A, y = B)) +
+    geom_point(aes(color = year)) +
+    geom_smooth(method = "lm") +
     labs(
     x = name,
     y = "Happiness Score",
@@ -188,19 +179,12 @@ gg_negative = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$negative_affe
 library(patchwork)
 (gg_log + gg_social + gg_healthy +gg_freedom ) / (gg_generosity + gg_perceptions + gg_positive + gg_negative)
 ```
-<<<<<<< HEAD
-=======
 
 As we can see in the plots, all the factors are related to the happiness score. People would feel happy if the country they live in have high GDP, strong social support, and they could be free to make life choices, also the country is generous and offering positive affect. On the contrary, if a country has a corrupt government, people wouldn’t be happy.
->>>>>>> 3bfada5e5cc5047dc73f7e8a9ced94e6d6be93b0
 
 <br>
 
-<<<<<<< HEAD
-# Additional analysis
-=======
 # Statistical Analysis
->>>>>>> 3bfada5e5cc5047dc73f7e8a9ced94e6d6be93b0
 
 To identify the significance of relationships and establish a regression model to predict the happiness score, we first take a look on the distribution of each variable.
 
@@ -240,10 +224,7 @@ To test the model efficiency and its predictory ability, we apply 100 times of c
 
 ```{r}
 set.seed(1)
-<<<<<<< HEAD
-=======
 
->>>>>>> 3bfada5e5cc5047dc73f7e8a9ced94e6d6be93b0
 cv_df = crossv_mc(happy_fit, 100) %>% 
   mutate(train = map(train,as_tibble),
          test = map(test, as_tibble)) %>% 
@@ -260,11 +241,6 @@ mean_rmse
 
 Here we can see the mean RMSE is `r mean_rmse`, which is acceptable. Therefore, the model could be used to predict the country's happiness score.
 
-<<<<<<< HEAD
-# Discussion
-=======
 <br>
 
 # Discussion
-
->>>>>>> 3bfada5e5cc5047dc73f7e8a9ced94e6d6be93b0

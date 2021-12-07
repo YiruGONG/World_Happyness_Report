@@ -5,7 +5,7 @@ output:
     toc: true
     toc_float: true
 ---
-## Data Sources
+## Data Source and Data Cleaning
 
 All the data are downloaded from [World Happiness Report](https://worldhappiness.report/ed/2021/#appendices-and-data): 
 
@@ -13,11 +13,7 @@ All the data are downloaded from [World Happiness Report](https://worldhappiness
 
 This dataset contains 1949 observations of happiness score and related social factors. The data are sourced from 166 different countries or regions covering years from 2005 to 2020. The GDP variables are provided by World Development Indicators (WDI) and healthy life expectancies are extracted from World Health Organization’s (WHO) Global Health Observatory data repository. All the other factors are gather from the survey of Gallup World Poll. 
 
-* COVID19 related Data: [Mortality Data](https://happiness-report.s3.amazonaws.com/2021/MortalityDataWHR2021C2.xlsx)
-
-
-
-## Data Processing and Cleaning
+In order use plotly map to show the world happiness score in each country, it is necessary to change the country full name in English to an abbreviated ISO3 form. Therefore, we download the package [countrycode](https://vincentarelbundock.github.io/countrycode/) to help us do the transformation. The resulting data file of `happy_iso3` contains a single dataframe with 1931 rows of data on 12 variables. The detailed information about each variables is lised in following section.
 
 ## Data Description
 
