@@ -14,10 +14,7 @@ library(plotly)
 library(dplyr)
 library(modelr)
 library(mgcv)
-<<<<<<< HEAD
-=======
 
->>>>>>> daf6c944e872f9101e978f239a66f47722184d1a
 options(
   ggplot2.continuous.colour = "viridis",
   ggplot2.continuous.fill = "viridis"
@@ -39,7 +36,14 @@ From a nationwide perspective, happier citizens may have better work performance
 
 After realizing the importance of happiness, we decided to analyze what affects happiness and in what way can we increase the overall happiness level.
 
-## Motivating Sources
+## Related Work
+
+Our study is mainly respired by the following articles.
+
+* "Why Governments Should Care More about Happiness." S. Arafa, April 5, 2019. [link](https://yy3019.github.io/P8105_final_project.github.io/report.html)
+* "How Being Happy Makes You Healthier." D. Coyle, August 27, 2017. [link](https://www.healthline.com/nutrition/happiness-and-health)
+* "The World Happiness Report 2021." [link](https://worldhappiness.report/ed/2021/#appendices-and-data)
+* "The pursuit of happiness—and its economic benefits." February 26, 2020.[link](https://drivinginnovation.ie.edu/the-pursuit-of-happiness-and-its-economic-benefits/)
 
 # Questions
 
@@ -121,19 +125,13 @@ We wanted to see countries' happiness score trend on a yearly base and chose two
 ```{r message = FALSE, warning = FALSE}
 happy_df_fac = happy_df%>%
   filter(year < 2019)
-<<<<<<< HEAD
-=======
 
->>>>>>> daf6c944e872f9101e978f239a66f47722184d1a
 round2 = function(x){
   if(is.numeric(x))
   x= round(x, digits = 2)
   return(x)
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> daf6c944e872f9101e978f239a66f47722184d1a
 happy_df_fac = map_dfc(happy_df_fac, round2)%>%
   mutate(year = as.character(year))
 ```
@@ -151,7 +149,6 @@ gg_factor = function(A,B,name){
 ```
 
 ```{r message = FALSE, warning = FALSE}
-<<<<<<< HEAD
 gg_log = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$log_gdp_per_capita, name = "log_gdp_per_capita")
 gg_social = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$social_support, name = "social_support")
 gg_healthy = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$healthy_life_expectancy_at_birth, name = "healthy_life_expectancy_at_birth")
@@ -169,7 +166,7 @@ library(patchwork)
 
 As shown in the plots, all the factors are related to the happiness score. People would feel happy if the country they live in have high GDP, strong social support, high life expectancy, and they could be free to make life choices, also the country is generous and  offering positive affect. On the contrary, if a country has a corrupt government and offers negative affect, people wouldn't have a happy life.
 
-=======
+```{r}
 
 gg_log = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$log_gdp_per_capita, name = "log_gdp_per_capita")
 
@@ -203,7 +200,7 @@ library(patchwork)
 
 As shown in the plots, all the factors are related to the happiness score. People would feel happy if the country they live in have high GDP, strong social support, high life expectancy, and they could be free to make life choices, also the country is generous and  offering positive affect. On the contrary, if a country has a corrupt government and offers negative affect, people wouldn't have a happy life.
 
->>>>>>> daf6c944e872f9101e978f239a66f47722184d1a
+
 # Additional analysis
 
 To identify the significance of relationships and establish a regression model to predict the happiness score, we first take a look on the distribution of each variable.
@@ -240,10 +237,7 @@ To test the model efficiency and its predictory ability, we apply 100 times of c
 
 ```{r}
 set.seed(1)
-<<<<<<< HEAD
-=======
 
->>>>>>> daf6c944e872f9101e978f239a66f47722184d1a
 cv_df = crossv_mc(happy_fit, 100) %>% 
   mutate(train = map(train,as_tibble),
          test = map(test, as_tibble)) %>% 
