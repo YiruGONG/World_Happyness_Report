@@ -74,7 +74,7 @@ In this part, we analyzed the basic patterns and characteristics of happiness. W
 
 ## World map of Happiness
 
-We decided to use `plotly` to show the happiness score around the world. We added a `country_code` column which provides the iso3 code of each country because plotly need iso3 country code to draw country map. We also deleted Kosovo and Somaliland region because they do not have corresponding iso3 code. 
+We decided to use `plotly` to show the happiness score around the world. We added a `country_code` column which provides the iso3 code of each country because plotly need iso3 country code (3-letter abbreviations of country names) to draw country map. We also deleted Kosovo and Somaliland region because they do not have corresponding iso3 code. 
 
 ```{r}
 happy_iso3 = happy_df %>% 
