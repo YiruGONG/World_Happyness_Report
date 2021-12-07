@@ -1,22 +1,91 @@
 ---
-title: "Happiness & factors"
-author: "Yunlin Zhou"
-date: "11/21/2021"
+title: "Factors Related to Happiness Score "
 output: html_document
 ---
 
-```{r}
+```{r echo = FALSE, message = FALSE}
 library(tidyverse)
 library(plotly)
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
 ```
 
-```{r}
+```{r echo = FALSE}
 happy_df = readxl::read_xls('DataPanelWHR2021C2.xls') %>% 
   janitor::clean_names()
 
 ```
 
-```{r}
+## First sight on factors & happiness score
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+happy_df_fac = happy_df%>%
+  filter(year < 2019)
+
+round2 = function(x){
+  if(is.numeric(x))
+  x= round(x, digits = 2)
+  return(x)
+}
+
+happy_df_fac = map_dfc(happy_df_fac, round2)%>%
+  mutate(year = as.character(year))
+```
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+gg_factor = function(A,B,name){
+  ggplot(happy_df_fac, aes(x = A, y = B))+
+    geom_point(aes(color = year))+
+    geom_smooth(method = "lm")+
+    labs(
+    x = name,
+    y = "Happiness Score",
+  )
+}
+```
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+gg_log = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$log_gdp_per_capita, name = "log_gdp_per_capita")
+gg_social = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$social_support, name = "social_support")
+gg_healthy = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$healthy_life_expectancy_at_birth, name = "healthy_life_expectancy_at_birth")
+gg_freedom = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$freedom_to_make_life_choices, name = "freedom_to_make_life_choices")
+gg_generosity = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$generosity, name = "generosity")
+gg_perceptions = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$perceptions_of_corruption, name = "perceptions_of_corruption")
+gg_positive = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$positive_affect, name = "positive_affect")
+gg_negative = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$negative_affect, name = "negative_affect")
+```
+
+```{r fig.height = 12, fig.width = 8, echo = FALSE, message = FALSE, warning = FALSE}
+library(patchwork)
+(gg_log + gg_social + gg_healthy +gg_freedom ) / (gg_generosity + gg_perceptions + gg_positive + gg_negative)
+```
+
+As we can see in the plots, all the factors are related to the happiness score. People would feel happy if the country they live in have high GDP, strong social support, and they could be free to make life choices, also the country is generous and offering positive affect. On the contrary, if a country has a corrupt government, people wouldn’t be happy.
+
+<br>
+
+### Slope
+
+```{r echo = FALSE}
+happy_df_lm = lm(life_ladder ~ log_gdp_per_capita + social_support + healthy_life_expectancy_at_birth + freedom_to_make_life_choices + generosity + perceptions_of_corruption + positive_affect + negative_affect, data = happy_df)
+
+coef(happy_df_lm)%>%
+  knitr::kable(col.names = "slope")
+
+```
+
+As shown in the table, strong social support as well as positive affect could largely encourage people to feel happy but corruption would make people unpleasant.
+
+<br>
+
+## Plots of Factors and Happiness score
+
+```{r echo = FALSE}
 happy_df_fac = happy_df%>%
   filter(year < 2019)
 
@@ -29,7 +98,7 @@ round2 = function(x){
 happy_df_fac = map_dfc(happy_df_fac, round2)
 ```
 
-```{r}
+```{r echo = FALSE}
 plot_happy = function(A,B,name){
 happy_B = bind_cols(A=A,B=B,country_name = happy_df_fac$country_name,
                     year = happy_df_fac$year) %>% 
@@ -63,28 +132,50 @@ happy_B%>%
 }
 ```
 
+
 ```{r}
 plot_log = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$log_gdp_per_capita, name = "log_gdp_per_capita")
 plot_log
+```
 
+
+```{r}
 plot_social = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$social_support, name = "social_support")
 plot_social
+```
 
+
+```{r}
 plot_healthy = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$healthy_life_expectancy_at_birth, name = "healthy_life_expectancy_at_birth")
 plot_healthy
+```
 
+
+```{r}
 plot_freedom = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$freedom_to_make_life_choices, name = "freedom_to_make_life_choices")
 plot_freedom
+```
 
+
+```{r}
 plot_generosity = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$generosity, name = "generosity")
 plot_generosity
+```
 
+
+```{r}
 plot_perceptions = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$perceptions_of_corruption, name = "perceptions_of_corruption")
 plot_perceptions
+```
 
+
+```{r}
 plot_positive = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$positive_affect, name = "positive_affect")
 plot_positive
+```
 
+
+```{r}
 plot_negative = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$negative_affect, name = "negative_affect")
 plot_negative
 
