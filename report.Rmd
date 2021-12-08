@@ -11,7 +11,6 @@ output:
 library(tidyverse)
 library(countrycode)
 library(plotly)
-library(dplyr)
 library(modelr)
 library(mgcv)
 
@@ -133,14 +132,9 @@ plot_2018_map
 We used data of 2018 to plot this graph because we wanted to know people's happiness rank before COVID-19 started. Before COVID-19 emerged, Denmark had the highest happiness score, while Afghanistan had the lowest happiness score.
 
 ```{r}
-score_rank = 
-  happy_df %>% 
+happy_df %>% 
   filter(year == "2018") %>% 
-  arrange(life_ladder) %>% 
-  mutate(
-    country_name = factor(country_name, levels = country_name)
-  )
-score_rank %>% 
+  mutate( country_name = fct_reorder(country_name, life_ladder) ) %>% 
   plot_ly(x = ~life_ladder, y = ~country_name, color = ~country_name, type = "bar", colors = "viridis")
 ```
 
@@ -155,7 +149,7 @@ yearly_trend =
   happy_df %>% 
   filter(country_name == "Denmark" | country_name == "United States" | country_name == "China" | country_name == "Afghanistan" | country_name == "Mongolia" | country_name == "Haiti") %>% 
   ggplot(aes(group = country_name, x = year, y = life_ladder, color = country_name)) + geom_point(alpha = .5) + geom_line() 
-yearly_trend
+ggplotly(yearly_trend)
 ```
 
 

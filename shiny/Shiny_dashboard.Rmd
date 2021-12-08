@@ -1,0 +1,215 @@
+---
+title: "Happiness Interactive Map"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(shiny)
+library(countrycode)
+library(plotly)
+
+# options(
+#   ggplot2.continuous.colour = "viridis",
+#   ggplot2.continuous.fill = "viridis"
+# )
+# scale_colour_discrete = scale_colour_viridis_d
+# scale_fill_discrete = scale_fill_viridis_d
+```
+
+```{r options, include = F}
+## Data input
+happy_df = readxl::read_xls('../DataPanelWHR2021C2.xls') %>% 
+  janitor::clean_names() %>% 
+  mutate(developed = ifelse(exp(log_gdp_per_capita) > 20000,"Developed","Developing"))
+
+happy_iso3 = happy_df %>% 
+  subset(
+    country_name != "Kosovo" & country_name != "Somaliland region"
+  ) %>% 
+  mutate(
+    country_code = countrycode(country_name, "country.name", "iso3c")
+  ) %>% 
+  relocate(country_code)
+  ## add rank!!!
+
+## sidebar selections
+year_opt = unique(pull(happy_iso3,year))
+max_rank = length(unique(happy_iso3$country_name))
+gdp_choice = c("Developed","Developing")
+
+```
+
+Snapshot
+======================================================================
+
+Column {.sidebar}
+-----------------------------------------------------------------------
+
+```{r}
+selectInput(
+  'year',
+  label = h3("Year:"),
+  choices = year_opt, selected = 2018
+)
+
+sliderInput(
+  'rank',
+  label = h3("Show ranks from:"),
+  min = 1, max = max_rank, value = c(1,50)
+)
+
+checkboxGroupInput(
+  'dev_status',
+  label = "Development Status (GDP pc - $20000)",
+  choices = gdp_choice,
+  selected = gdp_choice
+)
+
+```
+
+column {data-width=600}
+-----------------------------------------------------------------------
+
+### World map
+
+```{r}
+renderPlotly({
+  happy_iso3 %>% 
+  filter(year == input$year, 
+         developed %in% input$dev_status) %>% 
+  plot_ly(
+    type = 'choropleth', locations = ~country_code, z = ~life_ladder,
+    text = ~country_name
+  )
+})
+```
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+### Score Rank
+
+```{r}
+renderPlotly({
+  happy_df %>% 
+  filter(year == input$year,
+         developed %in% input$dev_status) %>% 
+  mutate(
+    country_name = fct_reorder(country_name, life_ladder),
+    rank = min_rank(desc(life_ladder)) ) %>% 
+  filter(rank >= input$rank[1] & rank <= input$rank[2]) %>% 
+  plot_ly(
+    x = ~life_ladder, y = ~country_name, color = ~country_name, 
+    type = "bar", colors = "viridis")
+})
+```
+
+### GDP Rank
+
+```{r}
+renderPlotly({
+  happy_df %>% 
+  filter(year == input$year,
+         developed %in% input$dev_status) %>% 
+  mutate(
+    country_name = fct_reorder(country_name, log_gdp_per_capita),
+    rank = min_rank(desc(log_gdp_per_capita)) ) %>% 
+  filter(rank >= input$rank[1] & rank <= input$rank[2]) %>% 
+  plot_ly(
+    x = ~log_gdp_per_capita, y = ~country_name, color = ~country_name, 
+    type = "bar", colors = "viridis")
+})
+```
+
+### Social Support
+
+```{r}
+renderPlotly({
+  happy_df %>% 
+  filter(year == input$year,
+         developed %in% input$dev_status) %>% 
+  mutate(
+    country_name = fct_reorder(country_name, social_support),
+    rank = min_rank(desc(social_support)) ) %>% 
+  filter(rank >= input$rank[1] & rank <= input$rank[2]) %>% 
+  plot_ly(
+    x = ~social_support, y = ~country_name, color = ~country_name, 
+    type = "bar", colors = "viridis")
+})
+```
+
+Yearly Trend
+======================================================================
+
+Column {.sidebar}
+-----------------------------------------------------------------------
+
+```{r}
+min_year = pull(happy_df,year) %>% unique() %>% min()
+max_year = pull(happy_df,year) %>% unique() %>% max()
+
+sliderInput(
+  'year_rg',
+  label = h3("Years:"),
+  min = min_year, max = max_year, value = c(min_year,max_year)
+)
+
+sliderInput(
+  'happy_rg',
+  label = h3("Happiness Score Top:"),
+  min = 0, max = 100, post = " %", value = c(0,10)
+)
+
+checkboxGroupInput(
+  'dev_status',
+  label = "Development Status (GDP pc - $20000)",
+  choices = gdp_choice,
+  selected = gdp_choice
+)
+
+sliderInput(
+  'gdp_rg',
+  label = h3("GDP pc range in selected countries :"),
+  min = 0, max = 100, post = " %", value = c(0,100)
+)
+```
+
+Row {data-height=650}
+-----------------------------------------------------------------------
+
+### Yearly Trend Plot
+
+```{r}
+renderPlotly({
+  yearly_trend = 
+    happy_df %>% 
+    filter(year >= input$year_rg[1] & year <= input$year_rg[2],
+           life_ladder <= quantile(life_ladder,1-input$happy_rg[1]*0.01) & life_ladder >= quantile(life_ladder,1-input$happy_rg[2]*0.01),
+           developed %in% input$dev_status) %>%
+    filter(log_gdp_per_capita <= quantile(log_gdp_per_capita,1-input$gdp_rg[1]*0.01) & log_gdp_per_capita >= quantile(log_gdp_per_capita,1-input$gdp_rg[2]*0.01)) %>% 
+    mutate(year = as.integer(year)) %>% 
+    ggplot(aes(group = country_name, x = year, y = life_ladder, color = country_name)) + geom_point(alpha = .5) + geom_line()
+  
+  ggplotly(yearly_trend)
+})
+```
+
+### Tables
+
+```{r}
+renderTable({
+  happy_df %>% 
+    filter(year >= input$year_rg[1] & year <= input$year_rg[2],
+           life_ladder <= quantile(life_ladder,1-input$happy_rg[1]*0.01) & life_ladder >= quantile(life_ladder,1-input$happy_rg[2]*0.01),
+           developed %in% input$dev_status) %>%
+    filter(log_gdp_per_capita <= quantile(log_gdp_per_capita,1-input$gdp_rg[1]*0.01) & log_gdp_per_capita >= quantile(log_gdp_per_capita,1-input$gdp_rg[2]*0.01)) %>% 
+    mutate(year = as.integer(year))
+})
+```
+
