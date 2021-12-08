@@ -68,7 +68,7 @@ This dataset contains 1949 observations of happiness score and related social fa
 
 ## Data Cleaning
 
-```{r}
+```{r, warning=FALSE}
 happy_df = readxl::read_xls('DataPanelWHR2021C2.xls') %>% 
   janitor::clean_names() %>% 
   mutate(
@@ -161,8 +161,6 @@ yearly_trend =
   ggplot(aes(group = country_name, x = year, y = life_ladder, color = country_name)) + geom_point(alpha = .5) + geom_line() 
 yearly_trend
 ```
-
-
 
 <br>
 
