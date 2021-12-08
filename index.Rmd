@@ -21,7 +21,6 @@ After realizing the importance of happiness, we decided to analyze what affects 
 
 * What factors affect happiness. 
 * In what way do these factors affect happiness. 
-* How does COVID-19 affect happiness.
 * How to increase happiness score.
 
 ## Group Members
