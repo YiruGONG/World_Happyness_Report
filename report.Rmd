@@ -67,12 +67,16 @@ This dataset contains 1949 observations of happiness score and related social fa
 
 ## Data Cleaning
 
-```{r}
+```{r, warning=FALSE}
 happy_df = readxl::read_xls('DataPanelWHR2021C2.xls') %>% 
-  janitor::clean_names()
+  janitor::clean_names() %>% 
+  mutate(
+    country_continent = countrycode(country_name, "country.name", "continent")
+  ) %>% 
+  relocate(country_continent)
 ```
 
-We Used `janitor::clean_names` to clean the data names. In order use plotly map to show the world happiness score in each country, it is necessary to change the full name of the English country to the ISO3 abbreviation form, which is the three-letter abbreviation form of the country name. Therefore, we downloaded the package [countrycode](https://vincentarelbundock.github.io/countrycode/) to help us do the transformation. The resulting data file of `happy_iso3` contains a single dataframe with 1931 rows of data on 12 variables. The detailed information about each variables is listed in following section.
+We Used `janitor::clean_names` to clean the data names. To clearly know which continent each country belongs to, we used  `countrycode` function to add a continent column. In order use plotly map to show the world happiness score in each country, it is necessary to change the full name of the English country to the ISO3 abbreviation form, which is the three-letter abbreviation form of the country name. Therefore, we downloaded the package [countrycode](https://vincentarelbundock.github.io/countrycode/) to help us do the transformation. The resulting data file of `happy_iso3` contains a single dataframe with 1931 rows of data on 12 variables. The detailed information about each variables is listed in following section. 
 
 <br>
 
@@ -151,8 +155,6 @@ yearly_trend =
   ggplot(aes(group = country_name, x = year, y = life_ladder, color = country_name)) + geom_point(alpha = .5) + geom_line() 
 ggplotly(yearly_trend)
 ```
-
-
 
 <br>
 
@@ -265,4 +267,22 @@ Here we can see the mean RMSE is `r mean_rmse`, which is acceptable. Therefore, 
 
 <br>
 
-# Discussion
+# Conclusions and Discussion
+
+The outcome of the project suggests that happiness has positive associations with  GDP per capita in purchasing power parity, social support, healthy life expectancy at birth, national average freedom to make life choices, generosity, positive affect measures (happiness, laugh, and enjoyment), while happiness has negative associations with negative affect measures (worry, sadness and anger) and national corruption.
+
+In order to let more people feel happier, governments could surge the development of economics, provide more jobs, and increase the GDP per capita in purchasing power parity. Governments could also invest more in scientific, medical, and health industries so that the life expectancy of human beings has the potential to increase. governments should provide more social support to people in need and provide residents more freedom to make their own choices. When residents have more happiness, they are able to work more effectively, have a more stable social life, and overall surge the development.
+
+<br>
+
+## Next Steps
+
+To advance the project, it would be necessary to consider more factors and more importantly to obtain more data. Factors that could affect the happiness of nations include but are not limited to income fluctuations, marital status modifications, educational level, self-esteem, and optimism. Additionally, it would be beneficial if more data in 2019 and 2021 could be collected. These data could help us gain a better view of happiness fluctuation during COVID-19 so that we could analyze how happiness was affected by COVID-19.
+
+
+
+
+
+
+
+
