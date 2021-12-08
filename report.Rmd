@@ -271,4 +271,22 @@ Here we can see the mean RMSE is `r mean_rmse`, which is acceptable. Therefore, 
 
 <br>
 
-# Discussion
+# Conclusions and Discussion
+
+The outcome of the project suggests that happiness has positive associations with  GDP per capita in purchasing power parity, social support, healthy life expectancy at birth, national average freedom to make life choices, generosity, positive affect measures (happiness, laugh, and enjoyment), while happiness has negative associations with negative affect measures (worry, sadness and anger) and national corruption.
+
+In order to let more people feel happier, governments could surge the development of economics, provide more jobs, and increase the GDP per capita in purchasing power parity. Governments could also invest more in scientific, medical, and health industries so that the life expectancy of human beings has the potential to increase. governments should provide more social support to people in need and provide residents more freedom to make their own choices. When residents have more happiness, they are able to work more effectively, have a more stable social life, and overall surge the development.
+
+<br>
+
+## Next Steps
+
+To advance the project, it would be necessary to consider more factors and more importantly to obtain more data. Factors that could affect the happiness of nations include but are not limited to income fluctuations, marital status modifications, educational level, self-esteem, and optimism. Additionally, it would be beneficial if more data in 2019 and 2021 could be collected. These data could help us gain a better view of happiness fluctuation during COVID-19 so that we could analyze how happiness was affected by COVID-19.
+
+
+
+
+
+
+
+
