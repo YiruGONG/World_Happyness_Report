@@ -13,36 +13,20 @@ library(tidyverse)
 library(shiny)
 library(countrycode)
 library(plotly)
-
-# options(
-#   ggplot2.continuous.colour = "viridis",
-#   ggplot2.continuous.fill = "viridis"
-# )
-# scale_colour_discrete = scale_colour_viridis_d
-# scale_fill_discrete = scale_fill_viridis_d
 ```
 
 ```{r options, include = F}
 ## Data input
 happy_df = readxl::read_xls('../DataPanelWHR2021C2.xls') %>% 
   janitor::clean_names() %>% 
-  mutate(developed = ifelse(exp(log_gdp_per_capita) > 20000,"Developed","Developing"))
-
-happy_iso3 = happy_df %>% 
   subset(
     country_name != "Kosovo" & country_name != "Somaliland region"
   ) %>% 
   mutate(
-    country_code = countrycode(country_name, "country.name", "iso3c")
-  ) %>% 
-  relocate(country_code)
-  ## add rank!!!
-
-## sidebar selections
-year_opt = unique(pull(happy_iso3,year))
-max_rank = length(unique(happy_iso3$country_name))
-gdp_choice = c("Developed","Developing")
-
+    developed = ifelse(exp(log_gdp_per_capita) > 20000,"Developed","Developing"),
+    country_continent = countrycode(country_name, "country.name", "continent"),
+    country_code = countrycode(country_name, "country.name", "iso3c")) %>% 
+  relocate(country_continent,country_code)
 ```
 
 Snapshot
@@ -52,6 +36,12 @@ Column {.sidebar}
 -----------------------------------------------------------------------
 
 ```{r}
+## sidebar selections
+year_opt = unique(pull(happy_df,year))
+max_rank = length(unique(happy_df$country_name))
+gdp_choice = c("Developed","Developing")
+conti_choice = unique(pull(happy_df,country_continent))
+
 selectInput(
   'year',
   label = h3("Year:"),
@@ -71,6 +61,13 @@ checkboxGroupInput(
   selected = gdp_choice
 )
 
+checkboxGroupInput(
+  'conti',
+  label = "Continent:",
+  choices = conti_choice,
+  selected = "Asia"
+)
+
 ```
 
 column {data-width=600}
@@ -80,9 +77,11 @@ column {data-width=600}
 
 ```{r}
 renderPlotly({
-  happy_iso3 %>% 
-  filter(year == input$year, 
-         developed %in% input$dev_status) %>% 
+  happy_df %>% 
+  filter(
+    year == input$year, 
+    developed %in% input$dev_status,
+    country_continent %in% input$conti) %>% 
   plot_ly(
     type = 'choropleth', locations = ~country_code, z = ~life_ladder,
     text = ~country_name
@@ -98,8 +97,10 @@ Column {.tabset}
 ```{r}
 renderPlotly({
   happy_df %>% 
-  filter(year == input$year,
-         developed %in% input$dev_status) %>% 
+  filter(
+    year == input$year, 
+    developed %in% input$dev_status,
+    country_continent %in% input$conti) %>% 
   mutate(
     country_name = fct_reorder(country_name, life_ladder),
     rank = min_rank(desc(life_ladder)) ) %>% 
@@ -115,8 +116,10 @@ renderPlotly({
 ```{r}
 renderPlotly({
   happy_df %>% 
-  filter(year == input$year,
-         developed %in% input$dev_status) %>% 
+  filter(
+    year == input$year, 
+    developed %in% input$dev_status,
+    country_continent %in% input$conti) %>% 
   mutate(
     country_name = fct_reorder(country_name, log_gdp_per_capita),
     rank = min_rank(desc(log_gdp_per_capita)) ) %>% 
@@ -132,8 +135,10 @@ renderPlotly({
 ```{r}
 renderPlotly({
   happy_df %>% 
-  filter(year == input$year,
-         developed %in% input$dev_status) %>% 
+  filter(
+    year == input$year, 
+    developed %in% input$dev_status,
+    country_continent %in% input$conti) %>% 
   mutate(
     country_name = fct_reorder(country_name, social_support),
     rank = min_rank(desc(social_support)) ) %>% 
@@ -167,6 +172,13 @@ sliderInput(
 )
 
 checkboxGroupInput(
+  'conti2',
+  label = "Continent:",
+  choices = conti_choice,
+  selected = "Europe"
+)
+
+checkboxGroupInput(
   'dev_status',
   label = "Development Status (GDP pc - $20000)",
   choices = gdp_choice,
@@ -189,10 +201,13 @@ Row {data-height=650}
 renderPlotly({
   yearly_trend = 
     happy_df %>% 
-    filter(year >= input$year_rg[1] & year <= input$year_rg[2],
-           life_ladder <= quantile(life_ladder,1-input$happy_rg[1]*0.01) & life_ladder >= quantile(life_ladder,1-input$happy_rg[2]*0.01),
-           developed %in% input$dev_status) %>%
-    filter(log_gdp_per_capita <= quantile(log_gdp_per_capita,1-input$gdp_rg[1]*0.01) & log_gdp_per_capita >= quantile(log_gdp_per_capita,1-input$gdp_rg[2]*0.01)) %>% 
+    filter(
+      country_continent %in% input$conti2,
+      developed %in% input$dev_status,
+      year >= input$year_rg[1] & year <= input$year_rg[2],
+      life_ladder <= quantile(life_ladder,1-input$happy_rg[1]*0.01) & life_ladder >= quantile(life_ladder,1-input$happy_rg[2]*0.01) ) %>%
+    filter(
+      log_gdp_per_capita <= quantile(log_gdp_per_capita,1-input$gdp_rg[1]*0.01) & log_gdp_per_capita >= quantile(log_gdp_per_capita,1-input$gdp_rg[2]*0.01)) %>% 
     mutate(year = as.integer(year)) %>% 
     ggplot(aes(group = country_name, x = year, y = life_ladder, color = country_name)) + geom_point(alpha = .5) + geom_line()
   
@@ -205,10 +220,13 @@ renderPlotly({
 ```{r}
 renderTable({
   happy_df %>% 
-    filter(year >= input$year_rg[1] & year <= input$year_rg[2],
-           life_ladder <= quantile(life_ladder,1-input$happy_rg[1]*0.01) & life_ladder >= quantile(life_ladder,1-input$happy_rg[2]*0.01),
-           developed %in% input$dev_status) %>%
-    filter(log_gdp_per_capita <= quantile(log_gdp_per_capita,1-input$gdp_rg[1]*0.01) & log_gdp_per_capita >= quantile(log_gdp_per_capita,1-input$gdp_rg[2]*0.01)) %>% 
+    filter(
+      country_continent %in% input$conti2,
+      developed %in% input$dev_status,
+      year >= input$year_rg[1] & year <= input$year_rg[2],
+      life_ladder <= quantile(life_ladder,1-input$happy_rg[1]*0.01) & life_ladder >= quantile(life_ladder,1-input$happy_rg[2]*0.01) ) %>%
+    filter(
+      log_gdp_per_capita <= quantile(log_gdp_per_capita,1-input$gdp_rg[1]*0.01) & log_gdp_per_capita >= quantile(log_gdp_per_capita,1-input$gdp_rg[2]*0.01)) %>% 
     mutate(year = as.integer(year))
 })
 ```
