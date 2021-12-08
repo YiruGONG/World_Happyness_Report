@@ -70,10 +70,14 @@ This dataset contains 1949 observations of happiness score and related social fa
 
 ```{r}
 happy_df = readxl::read_xls('DataPanelWHR2021C2.xls') %>% 
-  janitor::clean_names()
+  janitor::clean_names() %>% 
+  mutate(
+    country_continent = countrycode(country_name, "country.name", "continent")
+  ) %>% 
+  relocate(country_continent)
 ```
 
-We Used `janitor::clean_names` to clean the data names. In order use plotly map to show the world happiness score in each country, it is necessary to change the full name of the English country to the ISO3 abbreviation form, which is the three-letter abbreviation form of the country name. Therefore, we downloaded the package [countrycode](https://vincentarelbundock.github.io/countrycode/) to help us do the transformation. The resulting data file of `happy_iso3` contains a single dataframe with 1931 rows of data on 12 variables. The detailed information about each variables is listed in following section.
+We Used `janitor::clean_names` to clean the data names. To clearly know which continent each country belongs to, we used  `countrycode` function to add a continent column. In order use plotly map to show the world happiness score in each country, it is necessary to change the full name of the English country to the ISO3 abbreviation form, which is the three-letter abbreviation form of the country name. Therefore, we downloaded the package [countrycode](https://vincentarelbundock.github.io/countrycode/) to help us do the transformation. The resulting data file of `happy_iso3` contains a single dataframe with 1931 rows of data on 12 variables. The detailed information about each variables is listed in following section. 
 
 <br>
 
