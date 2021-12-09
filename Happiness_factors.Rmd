@@ -1,6 +1,10 @@
 ---
 title: "Factors Related to Happiness Score "
-output: html_document
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
 ---
 
 ```{r echo = FALSE, message = FALSE}
