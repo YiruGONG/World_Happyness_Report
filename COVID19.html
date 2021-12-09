@@ -13,8 +13,8 @@
 
 <title>COVID19</title>
 
-<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
-<script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -415,16 +415,27 @@ happy_df = readxl::read_xls(&#39;DataPanelWHR2021C2.xls&#39;) %&gt;%
     country_continent = countrycode(country_name, &quot;country.name&quot;, &quot;continent&quot;)
   ) %&gt;% 
   relocate(country_continent) %&gt;% 
-  subset(year %in% c(2017,2018,2019,2020))</code></pre>
+  subset(year %in% c(2017,2018,2019,2020))
+
+happy_df %&gt;% 
+  group_by(country_continent) %&gt;% 
+  summarize(n = n())</code></pre>
+<pre><code>## # A tibble: 5 × 2
+##   country_continent     n
+##   &lt;chr&gt;             &lt;int&gt;
+## 1 Africa              138
+## 2 Americas             77
+## 3 Asia                150
+## 4 Europe              151
+## 5 Oceania               8</code></pre>
 <pre class="r"><code>covid_death_rate = covid_df %&gt;% 
   plot_ly(x = ~country_name, 
          y = ~covid_19_deaths_per_100_000_population_in_2020,
          type = &quot;bar&quot;, colors = &quot;viridis&quot;)
 
 covid_death_rate</code></pre>
-<<<<<<< HEAD
-<div id="htmlwidget-b6e6f39aac5372d401a5" style="width:672px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-b6e6f39aac5372d401a5">{"x":{"visdat":{"cdf824cb610a":["function () ","plotlyVisDat"]},"cur_data":"cdf824cb610a","attrs":{"cdf824cb610a":{"x":{},"y":{},"colors":"viridis","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"country_name","type":"category","categoryorder":"array","categoryarray":["Armenia","Austria","Azerbaijan","Belgium","Brazil","Bulgaria","Chile","Colombia","Croatia","Cyprus","Czech Republic","Denmark","Ecuador","Estonia","Finland","France","Germany","Greece","Hong Kong S.A.R. of China","Hungary","Iceland","Israel","Italy","Japan","Kazakhstan","Kosovo","Kyrgyzstan","Latvia","Lithuania","Luxembourg","Malaysia","Malta","Mauritius","Mexico","Moldova","Mongolia","Netherlands","New Zealand","North Macedonia","Norway","Oman","Panama","Paraguay","Peru","Poland","Portugal","Qatar","Russia","Serbia","Singapore","Slovakia","Slovenia","South Korea","Spain","Sweden","Switzerland","Taiwan Province of China","Tajikistan","Thailand","Ukraine","United Kingdom","United States","Uzbekistan"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"covid_19_deaths_per_100_000_population_in_2020"},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["United States","United Kingdom","France","Germany","Netherlands","Belgium","Spain","Italy","Poland","Hungary","Czech Republic","Sweden","Greece","Denmark","Hong Kong S.A.R. of China","Singapore","Japan","Brazil","Mexico","Israel","Thailand","New Zealand","South Korea","Taiwan Province of China","Kazakhstan","Kyrgyzstan","Moldova","Russia","Ukraine","Armenia","Austria","Azerbaijan","Bulgaria","Chile","Colombia","Croatia","Cyprus","Ecuador","Estonia","Finland","Iceland","Latvia","Lithuania","Luxembourg","North Macedonia","Malaysia","Malta","Mauritius","Mongolia","Norway","Oman","Panama","Paraguay","Peru","Portugal","Qatar","Serbia","Slovakia","Slovenia","Switzerland","Tajikistan","Uzbekistan","Kosovo"],"y":[104.451400756836,108.449501037598,99.211799621582,40.3311004638672,67.260498046875,168.495697021484,108.731101989746,122.654197692871,75.4467010498047,98.7230987548828,108.133499145508,86.4122009277344,46.4162979125977,22.4093990325928,1.97412610054016,0.495699971914291,2.60290002822876,91.7151031494141,97.5756988525391,38.4146995544434,0.0903000012040138,0.518400013446808,1.78859996795654,0.0294000003486872,14.7044010162354,20.7688999176025,73.996696472168,38.5591011047363,44.0872001647949,95.2675018310547,69.0841979980469,26.0475006103516,109.031600952148,86.8791961669922,84.926399230957,95.4870986938477,13.5860004425049,79.5439987182617,17.2630004882812,10.125,8.49820041656494,33.6655006408691,53.5578002929688,79.0764999389648,120.141296386719,1.45519995689392,49.5992012023926,0.786300003528595,0.0305000003427267,8.04240036010742,29.3540000915527,93.2146987915039,31.7139015197754,114.279296875,67.7276992797852,8.50380039215088,47.1886978149414,39.1601028442383,129.730102539062,88.3343048095703,0.943599998950958,1.83449995517731,68.9164962768555],"type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-f10524be9af0ba7060b9" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f10524be9af0ba7060b9">{"x":{"visdat":{"d2be24ea7835":["function () ","plotlyVisDat"]},"cur_data":"d2be24ea7835","attrs":{"d2be24ea7835":{"x":{},"y":{},"colors":"viridis","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"country_name","type":"category","categoryorder":"array","categoryarray":["Armenia","Austria","Azerbaijan","Belgium","Brazil","Bulgaria","Chile","Colombia","Croatia","Cyprus","Czech Republic","Denmark","Ecuador","Estonia","Finland","France","Germany","Greece","Hong Kong S.A.R. of China","Hungary","Iceland","Israel","Italy","Japan","Kazakhstan","Kosovo","Kyrgyzstan","Latvia","Lithuania","Luxembourg","Malaysia","Malta","Mauritius","Mexico","Moldova","Mongolia","Netherlands","New Zealand","North Macedonia","Norway","Oman","Panama","Paraguay","Peru","Poland","Portugal","Qatar","Russia","Serbia","Singapore","Slovakia","Slovenia","South Korea","Spain","Sweden","Switzerland","Taiwan Province of China","Tajikistan","Thailand","Ukraine","United Kingdom","United States","Uzbekistan"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"covid_19_deaths_per_100_000_population_in_2020"},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["United States","United Kingdom","France","Germany","Netherlands","Belgium","Spain","Italy","Poland","Hungary","Czech Republic","Sweden","Greece","Denmark","Hong Kong S.A.R. of China","Singapore","Japan","Brazil","Mexico","Israel","Thailand","New Zealand","South Korea","Taiwan Province of China","Kazakhstan","Kyrgyzstan","Moldova","Russia","Ukraine","Armenia","Austria","Azerbaijan","Bulgaria","Chile","Colombia","Croatia","Cyprus","Ecuador","Estonia","Finland","Iceland","Latvia","Lithuania","Luxembourg","North Macedonia","Malaysia","Malta","Mauritius","Mongolia","Norway","Oman","Panama","Paraguay","Peru","Portugal","Qatar","Serbia","Slovakia","Slovenia","Switzerland","Tajikistan","Uzbekistan","Kosovo"],"y":[104.451400756836,108.449501037598,99.211799621582,40.3311004638672,67.260498046875,168.495697021484,108.731101989746,122.654197692871,75.4467010498047,98.7230987548828,108.133499145508,86.4122009277344,46.4162979125977,22.4093990325928,1.97412610054016,0.495699971914291,2.60290002822876,91.7151031494141,97.5756988525391,38.4146995544434,0.0903000012040138,0.518400013446808,1.78859996795654,0.0294000003486872,14.7044010162354,20.7688999176025,73.996696472168,38.5591011047363,44.0872001647949,95.2675018310547,69.0841979980469,26.0475006103516,109.031600952148,86.8791961669922,84.926399230957,95.4870986938477,13.5860004425049,79.5439987182617,17.2630004882812,10.125,8.49820041656494,33.6655006408691,53.5578002929688,79.0764999389648,120.141296386719,1.45519995689392,49.5992012023926,0.786300003528595,0.0305000003427267,8.04240036010742,29.3540000915527,93.2146987915039,31.7139015197754,114.279296875,67.7276992797852,8.50380039215088,47.1886978149414,39.1601028442383,129.730102539062,88.3343048095703,0.943599998950958,1.83449995517731,68.9164962768555],"type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code>happy_wider = 
   happy_df %&gt;% 
   pivot_wider(
@@ -432,25 +443,61 @@ covid_death_rate</code></pre>
     values_from = life_ladder,
     names_glue = &quot;life_ladder_{year}&quot;
   ) %&gt;% 
-  drop_na() %&gt;% 
   mutate(happy_change = life_ladder_2020 - life_ladder_2019) 
 
 covid_happy_trend = 
-  left_join(covid_df, happy_wider, by = &quot;country_name&quot;) %&gt;% 
-  drop_na()
+  left_join(covid_df, happy_wider, by = &quot;country_name&quot;)
+
 
 covid_happy_trend %&gt;% 
+  group_by(country_continent) %&gt;% 
+  summarise(n = n())</code></pre>
+<pre><code>## # A tibble: 6 × 2
+##   country_continent     n
+##   &lt;chr&gt;             &lt;int&gt;
+## 1 Africa                1
+## 2 Americas              9
+## 3 Asia                 16
+## 4 Europe               33
+## 5 Oceania               1
+## 6 &lt;NA&gt;                  3</code></pre>
+<pre class="r"><code>covid_happy_trend %&gt;% 
   ggplot(aes(x = covid_19_deaths_per_100_000_population_in_2020, 
              y = happy_change)) +
   geom_point() +
   geom_smooth(method = &quot;lm&quot;)</code></pre>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<p><img src="COVID19_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre><code>## Warning: Removed 13 rows containing non-finite values (stat_smooth).</code></pre>
+<pre><code>## Warning: Removed 13 rows containing missing values (geom_point).</code></pre>
+<p><img src="COVID19_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <pre class="r"><code>covid_happy_trend_fc = 
   covid_happy_trend %&gt;% 
   mutate(country_continent = factor(country_continent))
 
-model = lm(happy_change ~ covid_19_deaths_per_100_000_population_in_2020 + country_continent, data = covid_happy_trend_fc)
+model = lm(happy_change ~ covid_19_deaths_per_100_000_population_in_2020, data = covid_happy_trend_fc)
+summary(model)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = happy_change ~ covid_19_deaths_per_100_000_population_in_2020, 
+##     data = covid_happy_trend_fc)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.62869 -0.18129  0.01656  0.15900  0.90180 
+## 
+## Coefficients:
+##                                                  Estimate Std. Error t value
+## (Intercept)                                     0.0448135  0.0704650   0.636
+## covid_19_deaths_per_100_000_population_in_2020 -0.0006741  0.0009967  -0.676
+##                                                Pr(&gt;|t|)
+## (Intercept)                                       0.528
+## covid_19_deaths_per_100_000_population_in_2020    0.502
+## 
+## Residual standard error: 0.3061 on 48 degrees of freedom
+##   (13 observations deleted due to missingness)
+## Multiple R-squared:  0.009439,   Adjusted R-squared:  -0.0112 
+## F-statistic: 0.4574 on 1 and 48 DF,  p-value: 0.5021</code></pre>
+<pre class="r"><code>model = lm(happy_change ~ covid_19_deaths_per_100_000_population_in_2020 + country_continent, data = covid_happy_trend_fc)
 summary(model)</code></pre>
 <pre><code>## 
 ## Call:
@@ -459,34 +506,36 @@ summary(model)</code></pre>
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -0.63111 -0.21188 -0.00395  0.13530  0.83869 
+## -0.62868 -0.19330 -0.01149  0.15563  0.83712 
 ## 
 ## Coefficients:
 ##                                                  Estimate Std. Error t value
-## (Intercept)                                    -0.2256695  0.2987959  -0.755
-## covid_19_deaths_per_100_000_population_in_2020 -0.0002485  0.0013796  -0.180
-## country_continentAmericas                      -0.0204513  0.3458256  -0.059
-## country_continentAsia                           0.3260302  0.3135975   1.040
-## country_continentEurope                         0.2929524  0.3189358   0.919
-## country_continentOceania                        0.2780058  0.4225585   0.658
+## (Intercept)                                    -0.2257382  0.2994464  -0.754
+## covid_19_deaths_per_100_000_population_in_2020 -0.0001611  0.0013289  -0.121
+## country_continentAmericas                      -0.0283199  0.3448709  -0.082
+## country_continentAsia                           0.2831771  0.3129333   0.905
+## country_continentEurope                         0.2862521  0.3175619   0.901
+## country_continentOceania                        0.2780292  0.4234787   0.657
 ##                                                Pr(&gt;|t|)
-## (Intercept)                                       0.454
-## covid_19_deaths_per_100_000_population_in_2020    0.858
-## country_continentAmericas                         0.953
-## country_continentAsia                             0.304
-## country_continentEurope                           0.364
-## country_continentOceania                          0.514
+## (Intercept)                                       0.455
+## covid_19_deaths_per_100_000_population_in_2020    0.904
+## country_continentAmericas                         0.935
+## country_continentAsia                             0.370
+## country_continentEurope                           0.372
+## country_continentOceania                          0.515
 ## 
-## Residual standard error: 0.2988 on 42 degrees of freedom
-## Multiple R-squared:  0.1477, Adjusted R-squared:  0.04627 
-## F-statistic: 1.456 on 5 and 42 DF,  p-value: 0.2246</code></pre>
+## Residual standard error: 0.2994 on 44 degrees of freedom
+##   (13 observations deleted due to missingness)
+## Multiple R-squared:  0.1312, Adjusted R-squared:  0.03245 
+## F-statistic: 1.329 on 5 and 44 DF,  p-value: 0.2698</code></pre>
+<p>We expected that COVID19 will decrease the happiness score. However, there is no significant relationship between covid-related death and happiness score. This may result from the lack of data. In our happiness dataframe, there are 166 countries. However, in the COVID dataframe, there are only 63 countries have death data from year 2017 to 2020. This mean only 38% of the total countries we are interested in have COVID data. Among the countries have data related to COVID, 33 countries are from Europe, which covers more than 50% of the dataframe. In details we have 33 out of 151 European countries (21.85%), 16 out of 150 Asian countries (10.67%), 9 out of 77 American countries (11.69%), 1 out of 138 African countries (0.72%) and 1 from 9 Oceanian countries (11.11%). Number of European countries is un-proportionally high compared to the country numbers in other continent. On the other hand, the number of African countries is the lowest. The disproportion could bring more developed countries than developing countries to our dataset because Europe is concentrated with developed countries while Africa is concentrated with developing countries. Therefore, the dataset we have may significant biased because developed countries may be more stable to epedemic impact. So the data we have right now cannot give accurate relationship result.</p>
 <pre class="r"><code>covid_happy_trend %&gt;% 
   ggplot(aes(x = covid_19_deaths_per_100_000_population_in_2020, 
              y = death_change)) +
   geom_point() +
   geom_smooth(method = &quot;lm&quot;)</code></pre>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<p><img src="COVID19_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="COVID19_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <pre class="r"><code>model = lm(death_change ~ covid_19_deaths_per_100_000_population_in_2020, data = covid_happy_trend_fc)
 summary(model)</code></pre>
 <pre><code>## 
@@ -495,49 +544,23 @@ summary(model)</code></pre>
 ##     data = covid_happy_trend_fc)
 ## 
 ## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -109594  -41445  -16015   -1543  489605 
+##    Min     1Q Median     3Q    Max 
+## -95452 -37457 -11511  -1554 499294 
 ## 
 ## Coefficients:
 ##                                                Estimate Std. Error t value
-## (Intercept)                                      5228.7    24608.7   0.212
-## covid_19_deaths_per_100_000_population_in_2020    741.2      341.1   2.173
+## (Intercept)                                      2804.7    18344.1   0.153
+## covid_19_deaths_per_100_000_population_in_2020    671.6      263.2   2.552
 ##                                                Pr(&gt;|t|)  
-## (Intercept)                                       0.833  
-## covid_19_deaths_per_100_000_population_in_2020    0.035 *
+## (Intercept)                                      0.8790  
+## covid_19_deaths_per_100_000_population_in_2020   0.0132 *
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 101800 on 46 degrees of freedom
-## Multiple R-squared:  0.09309,    Adjusted R-squared:  0.07337 
-## F-statistic: 4.721 on 1 and 46 DF,  p-value: 0.03497</code></pre>
-<pre class="r"><code>covid_happy = 
-  left_join(covid_longer, happy_df, by = c(&quot;country_name&quot;, &quot;year&quot;)) %&gt;% 
-  drop_na() %&gt;% 
-  group_by(country_name) %&gt;% 
-  filter(n() == 4)</code></pre>
-=======
-<div id="htmlwidget-654365827ab090c22ef8" style="width:672px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-654365827ab090c22ef8">{"x":{"visdat":{"29d026f575c3":["function () ","plotlyVisDat"]},"cur_data":"29d026f575c3","attrs":{"29d026f575c3":{"x":{},"y":{},"colors":"viridis","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"country_name","type":"category","categoryorder":"array","categoryarray":["Armenia","Austria","Azerbaijan","Belgium","Brazil","Bulgaria","Chile","Colombia","Croatia","Cyprus","Czech Republic","Denmark","Ecuador","Estonia","Finland","France","Germany","Greece","Hong Kong S.A.R. of China","Hungary","Iceland","Israel","Italy","Japan","Kazakhstan","Kosovo","Kyrgyzstan","Latvia","Lithuania","Luxembourg","Malaysia","Malta","Mauritius","Mexico","Moldova","Mongolia","Netherlands","New Zealand","North Macedonia","Norway","Oman","Panama","Paraguay","Peru","Poland","Portugal","Qatar","Russia","Serbia","Singapore","Slovakia","Slovenia","South Korea","Spain","Sweden","Switzerland","Taiwan Province of China","Tajikistan","Thailand","Ukraine","United Kingdom","United States","Uzbekistan"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"covid_19_deaths_per_100_000_population_in_2020"},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["United States","United Kingdom","France","Germany","Netherlands","Belgium","Spain","Italy","Poland","Hungary","Czech Republic","Sweden","Greece","Denmark","Hong Kong S.A.R. of China","Singapore","Japan","Brazil","Mexico","Israel","Thailand","New Zealand","South Korea","Taiwan Province of China","Kazakhstan","Kyrgyzstan","Moldova","Russia","Ukraine","Armenia","Austria","Azerbaijan","Bulgaria","Chile","Colombia","Croatia","Cyprus","Ecuador","Estonia","Finland","Iceland","Latvia","Lithuania","Luxembourg","North Macedonia","Malaysia","Malta","Mauritius","Mongolia","Norway","Oman","Panama","Paraguay","Peru","Portugal","Qatar","Serbia","Slovakia","Slovenia","Switzerland","Tajikistan","Uzbekistan","Kosovo"],"y":[104.451400756836,108.449501037598,99.211799621582,40.3311004638672,67.260498046875,168.495697021484,108.731101989746,122.654197692871,75.4467010498047,98.7230987548828,108.133499145508,86.4122009277344,46.4162979125977,22.4093990325928,1.97412610054016,0.495699971914291,2.60290002822876,91.7151031494141,97.5756988525391,38.4146995544434,0.0903000012040138,0.518400013446808,1.78859996795654,0.0294000003486872,14.7044010162354,20.7688999176025,73.996696472168,38.5591011047363,44.0872001647949,95.2675018310547,69.0841979980469,26.0475006103516,109.031600952148,86.8791961669922,84.926399230957,95.4870986938477,13.5860004425049,79.5439987182617,17.2630004882812,10.125,8.49820041656494,33.6655006408691,53.5578002929688,79.0764999389648,120.141296386719,1.45519995689392,49.5992012023926,0.786300003528595,0.0305000003427267,8.04240036010742,29.3540000915527,93.2146987915039,31.7139015197754,114.279296875,67.7276992797852,8.50380039215088,47.1886978149414,39.1601028442383,129.730102539062,88.3343048095703,0.943599998950958,1.83449995517731,68.9164962768555],"type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
-<pre class="r"><code>death_trend_top = covid_df %&gt;% 
-  filter(covid_19_deaths_per_100_000_population_in_2020 &gt; 100) %&gt;% 
-  pivot_longer(
-    all_cause_death_count_2017:all_cause_death_count_2020,
-    names_to = &#39;year&#39;,
-    values_to = &#39;death&#39;,
-    names_prefix = &#39;all_cause_death_count_&#39;
-  ) %&gt;% 
-  plot_ly(x = ~year, y = ~death, type = &#39;scatter&#39;, mode = &#39;lines&#39;, text = ~country_name, color = ~country_name)
-
-death_trend_top</code></pre>
-<pre><code>## Warning in RColorBrewer::brewer.pal(N, &quot;Set2&quot;): n too large, allowed maximum for palette Set2 is 8
-## Returning the palette you asked for with that many colors
-
-## Warning in RColorBrewer::brewer.pal(N, &quot;Set2&quot;): n too large, allowed maximum for palette Set2 is 8
-## Returning the palette you asked for with that many colors</code></pre>
-<div id="htmlwidget-089cc46d9336328ceafc" style="width:672px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-089cc46d9336328ceafc">{"x":{"visdat":{"29d0640822e4":["function () ","plotlyVisDat"]},"cur_data":"29d0640822e4","attrs":{"29d0640822e4":{"x":{},"y":{},"mode":"lines","text":{},"color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"year","type":"category","categoryorder":"array","categoryarray":["2017","2018","2019","2020"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"death"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["2017","2018","2019","2020"],"y":[109278,110341,108436,128952],"mode":"lines","text":["Belgium","Belgium","Belgium","Belgium"],"type":"scatter","name":"Belgium","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)"},"error_y":{"color":"rgba(102,194,165,1)"},"error_x":{"color":"rgba(102,194,165,1)"},"line":{"color":"rgba(102,194,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["2017","2018","2019","2020"],"y":[109330,108247,107849,126525],"mode":"lines","text":["Bulgaria","Bulgaria","Bulgaria","Bulgaria"],"type":"scatter","name":"Bulgaria","marker":{"color":"rgba(228,156,113,1)","line":{"color":"rgba(228,156,113,1)"}},"textfont":{"color":"rgba(228,156,113,1)"},"error_y":{"color":"rgba(228,156,113,1)"},"error_x":{"color":"rgba(228,156,113,1)"},"line":{"color":"rgba(228,156,113,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["2017","2018","2019","2020"],"y":[111007,112604,112040,131440],"mode":"lines","text":["Czech Republic","Czech Republic","Czech Republic","Czech Republic"],"type":"scatter","name":"Czech Republic","marker":{"color":"rgba(201,152,157,1)","line":{"color":"rgba(201,152,157,1)"}},"textfont":{"color":"rgba(201,152,157,1)"},"error_y":{"color":"rgba(201,152,157,1)"},"error_x":{"color":"rgba(201,152,157,1)"},"line":{"color":"rgba(201,152,157,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["2017","2018","2019","2020"],"y":[656891,638884,642964,756317],"mode":"lines","text":["Italy","Italy","Italy","Italy"],"type":"scatter","name":"Italy","marker":{"color":"rgba(175,154,200,1)","line":{"color":"rgba(175,154,200,1)"}},"textfont":{"color":"rgba(175,154,200,1)"},"error_y":{"color":"rgba(175,154,200,1)"},"error_x":{"color":"rgba(175,154,200,1)"},"line":{"color":"rgba(175,154,200,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["2017","2018","2019","2020"],"y":[20318,19727,20412,25049],"mode":"lines","text":["North Macedonia","North Macedonia","North Macedonia","North Macedonia"],"type":"scatter","name":"North Macedonia","marker":{"color":"rgba(226,148,184,1)","line":{"color":"rgba(226,148,184,1)"}},"textfont":{"color":"rgba(226,148,184,1)"},"error_y":{"color":"rgba(226,148,184,1)"},"error_x":{"color":"rgba(226,148,184,1)"},"line":{"color":"rgba(226,148,184,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["2017","2018","2019","2020"],"y":[98704,112516,114560,214503],"mode":"lines","text":["Peru","Peru","Peru","Peru"],"type":"scatter","name":"Peru","marker":{"color":"rgba(176,208,99,1)","line":{"color":"rgba(176,208,99,1)"}},"textfont":{"color":"rgba(176,208,99,1)"},"error_y":{"color":"rgba(176,208,99,1)"},"error_x":{"color":"rgba(176,208,99,1)"},"line":{"color":"rgba(176,208,99,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["2017","2018","2019","2020"],"y":[20436,20428,20547,24277],"mode":"lines","text":["Slovenia","Slovenia","Slovenia","Slovenia"],"type":"scatter","name":"Slovenia","marker":{"color":"rgba(227,217,62,1)","line":{"color":"rgba(227,217,62,1)"}},"textfont":{"color":"rgba(227,217,62,1)"},"error_y":{"color":"rgba(227,217,62,1)"},"error_x":{"color":"rgba(227,217,62,1)"},"line":{"color":"rgba(227,217,62,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["2017","2018","2019","2020"],"y":[420589,423994,414914,501106],"mode":"lines","text":["Spain","Spain","Spain","Spain"],"type":"scatter","name":"Spain","marker":{"color":"rgba(245,207,100,1)","line":{"color":"rgba(245,207,100,1)"}},"textfont":{"color":"rgba(245,207,100,1)"},"error_y":{"color":"rgba(245,207,100,1)"},"error_x":{"color":"rgba(245,207,100,1)"},"line":{"color":"rgba(245,207,100,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["2017","2018","2019","2020"],"y":[606874,613309,600532,696705],"mode":"lines","text":["United Kingdom","United Kingdom","United Kingdom","United Kingdom"],"type":"scatter","name":"United Kingdom","marker":{"color":"rgba(219,192,155,1)","line":{"color":"rgba(219,192,155,1)"}},"textfont":{"color":"rgba(219,192,155,1)"},"error_y":{"color":"rgba(219,192,155,1)"},"error_x":{"color":"rgba(219,192,155,1)"},"line":{"color":"rgba(219,192,155,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["2017","2018","2019","2020"],"y":[2810927,2839076,2852747,3424996],"mode":"lines","text":["United States","United States","United States","United States"],"type":"scatter","name":"United States","marker":{"color":"rgba(179,179,179,1)","line":{"color":"rgba(179,179,179,1)"}},"textfont":{"color":"rgba(179,179,179,1)"},"error_y":{"color":"rgba(179,179,179,1)"},"error_x":{"color":"rgba(179,179,179,1)"},"line":{"color":"rgba(179,179,179,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
->>>>>>> 65d53cf395bbf0cc234b23f5f7d7742554fc2ba7
+## Residual standard error: 90180 on 61 degrees of freedom
+## Multiple R-squared:  0.09646,    Adjusted R-squared:  0.08165 
+## F-statistic: 6.512 on 1 and 61 DF,  p-value: 0.01324</code></pre>
+<p>Covid-related deaths contribute to the total death.</p>
 </div>
 
 

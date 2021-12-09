@@ -54,6 +54,10 @@ happy_df = readxl::read_xls('DataPanelWHR2021C2.xls') %>%
   ) %>% 
   relocate(country_continent) %>% 
   subset(year %in% c(2017,2018,2019,2020))
+
+happy_df %>% 
+  group_by(country_continent) %>% 
+  summarize(n = n())
 ```
 
 
@@ -74,13 +78,19 @@ happy_wider =
     values_from = life_ladder,
     names_glue = "life_ladder_{year}"
   ) %>% 
-  drop_na() %>% 
   mutate(happy_change = life_ladder_2020 - life_ladder_2019) 
 
 covid_happy_trend = 
-  left_join(covid_df, happy_wider, by = "country_name") %>% 
-  drop_na()
+  left_join(covid_df, happy_wider, by = "country_name")
 
+
+covid_happy_trend %>% 
+  group_by(country_continent) %>% 
+  summarise(n = n())
+```
+
+
+```{r}
 covid_happy_trend %>% 
   ggplot(aes(x = covid_19_deaths_per_100_000_population_in_2020, 
              y = happy_change)) +
@@ -88,14 +98,23 @@ covid_happy_trend %>%
   geom_smooth(method = "lm")
 ```
 
+
 ```{r}
 covid_happy_trend_fc = 
   covid_happy_trend %>% 
   mutate(country_continent = factor(country_continent))
 
+model = lm(happy_change ~ covid_19_deaths_per_100_000_population_in_2020, data = covid_happy_trend_fc)
+summary(model)
+```
+
+```{r}
 model = lm(happy_change ~ covid_19_deaths_per_100_000_population_in_2020 + country_continent, data = covid_happy_trend_fc)
 summary(model)
 ```
+
+
+We expected that COVID19 will decrease the happiness score. However, there is no significant relationship between covid-related death and happiness score. This may result from the lack of data. In our happiness dataframe, there are 166 countries. However, in the COVID dataframe, there are only 63 countries have death data from year 2017 to 2020. This mean only 38% of the total countries we are interested in have COVID data. Among the countries have data related to COVID, 33 countries are from Europe, which covers more than 50% of the dataframe. In details we have 33 out of 151 European countries (21.85%), 16 out of 150 Asian countries (10.67%), 9 out of 77 American countries (11.69%), 1 out of 138 African countries (0.72%) and 1 from 9 Oceanian countries (11.11%). Number of European countries is un-proportionally high compared to the country numbers in other continent. On the other hand, the number of African countries is the lowest. The disproportion could bring more developed countries than developing countries to our dataset because Europe is concentrated with developed countries while Africa is concentrated with developing countries.   Therefore, the dataset we have may significant biased because developed countries may be more stable to epedemic impact. So the data we have right now cannot give accurate relationship result.
 
 ```{r}
 covid_happy_trend %>% 
@@ -110,7 +129,9 @@ model = lm(death_change ~ covid_19_deaths_per_100_000_population_in_2020, data =
 summary(model)
 ```
 
-```{r}
+Covid-related deaths contribute to the total death. 
+
+```{r, echo = FALSE}
 covid_happy = 
   left_join(covid_longer, happy_df, by = c("country_name", "year")) %>% 
   drop_na() %>% 
