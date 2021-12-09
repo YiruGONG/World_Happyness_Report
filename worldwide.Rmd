@@ -1,0 +1,84 @@
+---
+title: "Report"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(countrycode)
+library(plotly)
+library(modelr)
+library(mgcv)
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+```
+
+<br>
+
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+happy_df = readxl::read_xls('DataPanelWHR2021C2.xls') %>% 
+  janitor::clean_names() %>% 
+  mutate(
+    country_continent = countrycode(country_name, "country.name", "continent")
+  ) %>% 
+  relocate(country_continent)
+```
+
+## World Map of Happiness in 2018
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+happy_iso3 = happy_df %>% 
+  subset(
+    country_name != "Kosovo" & country_name != "Somaliland region"
+  ) %>% 
+  mutate(
+    country_code = countrycode(country_name, "country.name", "iso3c")
+  ) %>% 
+  relocate(country_code)
+```
+
+```{r}
+plot_2018_map = happy_iso3 %>% 
+  filter(year == 2018) %>% 
+  plot_ly(
+    type = 'choropleth', locations = ~country_code, z = ~life_ladder,
+    text = ~country_name
+  )
+plot_2018_map
+```
+
+<br>
+
+## Happiness Score Rank in 2018
+
+```{r}
+happy_df %>% 
+  filter(year == "2018") %>% 
+  mutate( country_name = fct_reorder(country_name, life_ladder) ) %>% 
+  plot_ly(x = ~life_ladder, y = ~country_name, color = ~country_name, type = "bar", colors = "viridis")
+```
+
+<br>
+
+## Yearly Trend in 6 Countries from Different Happiness-Score Group
+
+```{r}
+yearly_trend = 
+  happy_df %>% 
+  filter(country_name == "Denmark" | country_name == "United States" | country_name == "China" | country_name == "Afghanistan" | country_name == "Mongolia" | country_name == "Haiti") %>% 
+  ggplot(aes(group = country_name, x = year, y = life_ladder, color = country_name)) + geom_point(alpha = .5) + geom_line() 
+ggplotly(yearly_trend)
+```
+
+<br>
+
