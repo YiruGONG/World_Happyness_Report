@@ -13,6 +13,7 @@ library(countrycode)
 library(plotly)
 library(modelr)
 library(mgcv)
+library(patchwork)
 
 options(
   ggplot2.continuous.colour = "viridis",
@@ -120,13 +121,12 @@ happy_iso3 = happy_df %>%
 We focused on Year 2018 because we wanted to know the happiness score before COVID-19. Each country's life ladder (happiness) score is shown on the map. 
 
 ```{r}
-plot_2018_map = happy_iso3 %>% 
+happy_iso3 %>% 
   filter(year == 2018) %>% 
   plot_ly(
     type = 'choropleth', locations = ~country_code, z = ~life_ladder,
     text = ~country_name
   )
-plot_2018_map
 ```
 
 <br>
@@ -138,8 +138,13 @@ We used data of 2018 to plot this graph because we wanted to know people's happi
 ```{r}
 happy_df %>% 
   filter(year == "2018") %>% 
-  mutate( country_name = fct_reorder(country_name, life_ladder) ) %>% 
-  plot_ly(x = ~life_ladder, y = ~country_name, color = ~country_name, type = "bar", colors = "viridis")
+  mutate(country_name = fct_reorder(country_name, life_ladder)) %>% 
+  plot_ly(
+    x = ~life_ladder, y = ~country_name, color = ~country_name, 
+    type = "bar", colors = "viridis") %>% 
+  layout(
+    xaxis = list(title = "Happiness Score of 2018"), yaxis = list(title = NA)
+  )
 ```
 
 <br>
@@ -152,7 +157,9 @@ We wanted to see countries' happiness score trend on a yearly base and chose two
 yearly_trend = 
   happy_df %>% 
   filter(country_name == "Denmark" | country_name == "United States" | country_name == "China" | country_name == "Afghanistan" | country_name == "Mongolia" | country_name == "Haiti") %>% 
-  ggplot(aes(group = country_name, x = year, y = life_ladder, color = country_name)) + geom_point(alpha = .5) + geom_line() 
+  ggplot(aes(x = year, y = life_ladder, group = country_name, color = country_name)) +
+    geom_point(alpha = .5) + 
+    geom_line() 
 ggplotly(yearly_trend)
 ```
 
@@ -163,6 +170,7 @@ ggplotly(yearly_trend)
 To better explore the relationship between all the factors and happiness score, we used the `ggplot` and `plotly` to visualize the data and present the linear regression.
 
 ```{r message = FALSE, warning = FALSE}
+# Data Preparation
 happy_df_fac = happy_df %>%
   filter(year < 2019)
 
@@ -174,9 +182,8 @@ round2 = function(x){
 
 happy_df_fac = map_dfc(happy_df_fac, round2) %>%
   mutate(year = as.character(year))
-```
 
-```{r message = FALSE, warning = FALSE}
+# Graphic function
 gg_factor = function(A,B,name){
   ggplot(happy_df_fac, aes(x = A, y = B)) +
     geom_point(aes(color = year)) +
@@ -186,9 +193,8 @@ gg_factor = function(A,B,name){
     y = "Happiness Score",
   )
 }
-```
 
-```{r message = FALSE, warning = FALSE}
+# Plot
 gg_log = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$log_gdp_per_capita, name = "log_gdp_per_capita")
 gg_social = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$social_support, name = "social_support")
 gg_healthy = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$healthy_life_expectancy_at_birth, name = "healthy_life_expectancy_at_birth")
@@ -200,7 +206,6 @@ gg_negative = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$negative_affe
 ```
 
 ```{r fig.height = 12, fig.width = 8, message = FALSE, warning = FALSE}
-library(patchwork)
 (gg_log + gg_social + gg_healthy +gg_freedom ) / (gg_generosity + gg_perceptions + gg_positive + gg_negative)
 ```
 
@@ -232,7 +237,7 @@ Since all factors are continuous, we can apply fundamental multivariable linear 
 # General Model
 happy_fit = happy_df %>% 
   select(-country_name,-year)
-fit = happy_fit %>%
+fit = happy_fit %>% 
   lm(life_ladder~., data=.) %>% 
   broom.mixed::tidy()
 knitr::kable(fit)
@@ -250,9 +255,11 @@ To test the model efficiency and its predictory ability, we apply 100 times of c
 set.seed(1)
 
 cv_df = crossv_mc(happy_fit, 100) %>% 
-  mutate(train = map(train,as_tibble),
-         test = map(test, as_tibble)) %>% 
-  mutate(linear_mod = map(train, ~lm(life_ladder ~ ., data = .x)) ) %>% 
+  mutate(
+    train = map(train,as_tibble),
+    test = map(test, as_tibble)) %>% 
+  mutate(
+    linear_mod = map(train, ~lm(life_ladder ~ ., data = .x)) ) %>% 
   mutate(
     rmse_linear = map2_dbl(linear_mod, test, ~rmse(model = .x, data = .y)) )
 ```

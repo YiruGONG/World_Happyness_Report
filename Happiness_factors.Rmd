@@ -10,6 +10,7 @@ output:
 ```{r echo = FALSE, message = FALSE}
 library(tidyverse)
 library(plotly)
+library(patchwork)
 
 options(
   ggplot2.continuous.colour = "viridis",
@@ -19,41 +20,35 @@ scale_colour_discrete = scale_colour_viridis_d
 scale_fill_discrete = scale_fill_viridis_d
 ```
 
-```{r echo = FALSE}
-happy_df = readxl::read_xls('DataPanelWHR2021C2.xls') %>% 
-  janitor::clean_names()
-
-```
-
 ## First sight on factors & happiness score
 
+To better explore the relationship between happiness score and every factor, we made the linear regression plots and calculated related estimates. Further, we analyzed the result and derived to a more direct and accurate conclusion. 
+
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
-happy_df_fac = happy_df%>%
-  filter(year < 2019)
+# Data Preparation
+happy_df_fac = readxl::read_xls('DataPanelWHR2021C2.xls') %>% 
+  janitor::clean_names() %>% 
+  filter(year < 2019) %>% 
+  map_dfc(happy_df_fac, round2) %>%
+  mutate(year = as.character(year))
 
 round2 = function(x){
   if(is.numeric(x))
   x= round(x, digits = 2)
   return(x)
-}
 
-happy_df_fac = map_dfc(happy_df_fac, round2)%>%
-  mutate(year = as.character(year))
-```
-
-```{r echo = FALSE, message = FALSE, warning = FALSE}
+# Graphic function
 gg_factor = function(A,B,name){
   ggplot(happy_df_fac, aes(x = A, y = B))+
-    geom_point(aes(color = year))+
-    geom_smooth(method = "lm")+
+    geom_point(aes(color = year)) +
+    geom_smooth(method = "lm") +
     labs(
     x = name,
     y = "Happiness Score",
   )
 }
-```
 
-```{r echo = FALSE, message = FALSE, warning = FALSE}
+# Plot
 gg_log = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$log_gdp_per_capita, name = "log_gdp_per_capita")
 gg_social = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$social_support, name = "social_support")
 gg_healthy = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$healthy_life_expectancy_at_birth, name = "healthy_life_expectancy_at_birth")
@@ -65,7 +60,6 @@ gg_negative = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$negative_affe
 ```
 
 ```{r fig.height = 12, fig.width = 8, echo = FALSE, message = FALSE, warning = FALSE}
-library(patchwork)
 (gg_log + gg_social + gg_healthy +gg_freedom ) / (gg_generosity + gg_perceptions + gg_positive + gg_negative)
 ```
 
@@ -76,11 +70,14 @@ As we can see in the plots, all the factors are related to the happiness score. 
 ### Slope
 
 ```{r echo = FALSE}
-happy_df_lm = lm(life_ladder ~ log_gdp_per_capita + social_support + healthy_life_expectancy_at_birth + freedom_to_make_life_choices + generosity + perceptions_of_corruption + positive_affect + negative_affect, data = happy_df)
+happy_df_lm = lm(life_ladder ~ log_gdp_per_capita + social_support +
+                   healthy_life_expectancy_at_birth + freedom_to_make_life_choices +
+                   generosity + perceptions_of_corruption + 
+                   positive_affect + negative_affect,
+                 data = happy_df_fac)
 
-coef(happy_df_lm)%>%
+coef(happy_df_lm) %>%
   knitr::kable(col.names = "slope")
-
 ```
 
 As shown in the table, strong social support as well as positive affect could largely encourage people to feel happy but corruption would make people unpleasant.
@@ -90,25 +87,12 @@ As shown in the table, strong social support as well as positive affect could la
 ## Plots of Factors and Happiness score
 
 ```{r echo = FALSE}
-happy_df_fac = happy_df%>%
-  filter(year < 2019)
-
-round2 = function(x){
-  if(is.numeric(x))
-  x= round(x, digits = 2)
-  return(x)
-}
-
-happy_df_fac = map_dfc(happy_df_fac, round2)
-```
-
-```{r echo = FALSE}
 plot_happy = function(A,B,name){
 happy_B = bind_cols(A=A,B=B,country_name = happy_df_fac$country_name,
                     year = happy_df_fac$year) %>% 
-  filter(!is.na(A))%>%
-  filter(!is.na(B))%>%
-  arrange(B)%>%
+  filter(!is.na(A)) %>%
+  filter(!is.na(B)) %>%
+  arrange(B) %>%
   mutate(
   text_label = 
   str_c("Happiness score: ", A,
@@ -126,9 +110,8 @@ happy_B%>%
     mode = "markers",
     color = ~year,
     text = ~text_label,
-    alpha = 0.5
-  )%>%
-  add_lines(x = ~B, y = predict(fit_B), color = NULL)%>%
+    alpha = 0.5 ) %>%
+  add_lines(x = ~B, y = predict(fit_B), color = NULL) %>%
   layout(
     xaxis = list(title = name), yaxis = list(title = "Happiness score")
   )
