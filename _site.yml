@@ -12,7 +12,7 @@ navbar:
     - text: "Data Analysis"
       href: regression_analysis.html
     - text: "Map"
-      href: map.html
+      href: https://yirugong.shinyapps.io/shiny/
     - text: "Data"
       href: data.html 
   right:

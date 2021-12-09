@@ -1,0 +1,11 @@
+name: shiny
+title:
+username:
+account: yirugong
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 5295904
+bundleId: 5348247
+url: https://yirugong.shinyapps.io/shiny/
+when: 1639018122.12928
+lastSyncTime: 1639018122.12928

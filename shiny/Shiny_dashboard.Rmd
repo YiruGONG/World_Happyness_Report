@@ -13,11 +13,12 @@ library(tidyverse)
 library(shiny)
 library(countrycode)
 library(plotly)
+library(rsconnect)
 ```
 
 ```{r options, include = F}
 ## Data input
-happy_df = readxl::read_xls('../DataPanelWHR2021C2.xls') %>% 
+happy_df = readxl::read_xls('DataPanelWHR2021C2.xls') %>% 
   janitor::clean_names() %>% 
   subset(
     country_name != "Kosovo" & country_name != "Somaliland region"
