@@ -88,3 +88,4 @@ Here we can see the mean RMSE is `r mean_rmse`, which is acceptable. Therefore, 
 
 ## Model Interpretation
 
+In this multivariable linear regression model, we found that all variables except the negative effect are significantly associated with happiness score (life_ladder), while the prediction ability remain moderate. More complex model may be required here for more accurate prediction.
