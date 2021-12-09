@@ -13,7 +13,6 @@ library(modelr)
 library(mgcv)
 ```
 
-## Data Input
 
 ```{r}
 happy_df = readxl::read_xls('DataPanelWHR2021C2.xls') %>% 
@@ -88,3 +87,4 @@ Here we can see the mean RMSE is `r mean_rmse`, which is acceptable. Therefore, 
 
 ## Model Interpretation
 
+The outcome of the project suggests that happiness has positive associations with GDP per capita in purchasing power parity, social support, healthy life expectancy at birth, national average freedom to make life choices, generosity, positive affect measures (happiness, laugh, and enjoyment), while happiness has negative associations with negative affect measures (worry, sadness and anger) and national corruption.
