@@ -17,7 +17,7 @@ library(rsconnect)
 
 # rsconnect::deployApp("./shiny/")
 
-options(
+options( %>% 
   ggplot2.continuous.colour = "viridis",
   ggplot2.continuous.fill = "viridis"
 )

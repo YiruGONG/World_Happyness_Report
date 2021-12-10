@@ -23,6 +23,13 @@ After realizing the importance of happiness, we decided to analyze what affects 
 * In what way do these factors affect happiness. 
 * How to increase happiness score.
 
+## Data
+
+All the data are downloaded from [World Happiness Report](https://worldhappiness.report/ed/2021/#appendices-and-data): 
+
+* Happiness Data: [Data Panel](https://happiness-report.s3.amazonaws.com/2021/DataPanelWHR2021C2.xls)
+* Covid-19 and Mortality Data: [Data Panel](https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fhappiness-report.s3.amazonaws.com%2F2021%2FMortalityDataWHR2021C2.xlsx&wdOrigin=BROWSELINK)
+
 ## Group Members
 * [Jiaqi Chen](https://jchen0000.github.io/)
 * [Xinran Sun](https://xsun0828.github.io/xs2447.github.io/)
