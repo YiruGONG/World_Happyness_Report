@@ -24,18 +24,19 @@ scale_fill_discrete = scale_fill_viridis_d
 
 To better explore the relationship between happiness score and every factor, we made the linear regression plots and calculated related estimates. Further, we analyzed the result and derived to a more direct and accurate conclusion. 
 
-```{r echo = FALSE, message = FALSE, warning = FALSE}
+```{r message = FALSE, warning = FALSE}
 # Data Preparation
-happy_df_fac = readxl::read_xls('DataPanelWHR2021C2.xls') %>% 
-  janitor::clean_names() %>% 
-  filter(year < 2019) %>% 
-  map_dfc(happy_df_fac, round2) %>%
-  mutate(year = as.character(year))
-
 round2 = function(x){
   if(is.numeric(x))
   x= round(x, digits = 2)
   return(x)
+}
+
+happy_df_fac = readxl::read_xls('DataPanelWHR2021C2.xls') %>% 
+  janitor::clean_names() %>% 
+  filter(year < 2019) %>% 
+  map_dfc(round2) %>%
+  mutate(year = as.character(year))
 
 # Graphic function
 gg_factor = function(A,B,name){
@@ -88,34 +89,34 @@ As shown in the table, strong social support as well as positive affect could la
 
 ```{r echo = FALSE}
 plot_happy = function(A,B,name){
-happy_B = bind_cols(A=A,B=B,country_name = happy_df_fac$country_name,
-                    year = happy_df_fac$year) %>% 
-  filter(!is.na(A)) %>%
-  filter(!is.na(B)) %>%
-  arrange(B) %>%
-  mutate(
-  text_label = 
-  str_c("Happiness score: ", A,
-        "\n",name,": ", B,
-         "\nCountry: ", country_name,
-         "\nYear: ", year))
-
-fit_B = lm(A ~ B, data = happy_B)
-
-happy_B%>%
-  plot_ly(
-    x = ~B,
-    y = ~A,
-    type = "scatter",
-    mode = "markers",
-    color = ~year,
-    text = ~text_label,
-    alpha = 0.5 ) %>%
-  add_lines(x = ~B, y = predict(fit_B), color = NULL) %>%
-  layout(
-    xaxis = list(title = name), yaxis = list(title = "Happiness score")
-  )
-
+  happy_B = bind_cols(A=A,B=B,
+                      country_name = happy_df_fac$country_name,
+                      year = happy_df_fac$year) %>% 
+    filter(!is.na(A)) %>%
+    filter(!is.na(B)) %>%
+    arrange(B) %>%
+    mutate(
+    text_label = 
+    str_c("Happiness score: ", A,
+          "\n",name,": ", B,
+           "\nCountry: ", country_name,
+           "\nYear: ", year))
+  
+  fit_B = lm(A ~ B, data = happy_B)
+  
+  happy_B%>%
+    plot_ly(
+      x = ~B,
+      y = ~A,
+      type = "scatter",
+      mode = "markers",
+      color = ~year,
+      text = ~text_label,
+      alpha = 0.5 ) %>%
+    add_lines(x = ~B, y = predict(fit_B), color = NULL) %>%
+    layout(
+      xaxis = list(title = name), yaxis = list(title = "Happiness score")
+    )
 }
 ```
 
