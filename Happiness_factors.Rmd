@@ -85,9 +85,9 @@ As shown in the table, strong social support as well as positive affect could la
 
 <br>
 
-## Plots of Factors and Happiness score
+## Plots of Factors and Happiness Score
 
-```{r echo = FALSE}
+```{r echo = FALSE, warning = FALSE}
 plot_happy = function(A,B,name){
   happy_B = bind_cols(A=A,B=B,
                       country_name = happy_df_fac$country_name,
@@ -121,51 +121,60 @@ plot_happy = function(A,B,name){
 ```
 
 
-```{r}
+```{r, warning = FALSE}
 plot_log = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$log_gdp_per_capita, name = "log_gdp_per_capita")
 plot_log
 ```
 
+This plot shows a positive association between happiness scores and the statistics of GDP per capita in purchasing power parity.
 
-```{r}
+```{r, warning = FALSE}
 plot_social = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$social_support, name = "social_support")
 plot_social
 ```
 
+This plot shows a positive association between happiness scores and national average of social support.
 
-```{r}
+```{r, warning = FALSE}
 plot_healthy = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$healthy_life_expectancy_at_birth, name = "healthy_life_expectancy_at_birth")
 plot_healthy
 ```
 
+This plot shows a positive association between happiness scores and  healthy life expectancy at birth.
 
-```{r}
+```{r, warning = FALSE}
 plot_freedom = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$freedom_to_make_life_choices, name = "freedom_to_make_life_choices")
 plot_freedom
 ```
 
+This plot shows a positive association between happiness scores and national average freedom to make life choices.
 
-```{r}
+```{r, warning = FALSE}
 plot_generosity = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$generosity, name = "generosity")
 plot_generosity
 ```
 
+This plot shows a positive association between happiness scores and the residual of regressing national average of donation on GDP per capita.
 
-```{r}
+```{r, warning = FALSE}
 plot_perceptions = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$perceptions_of_corruption, name = "perceptions_of_corruption")
 plot_perceptions
 ```
 
+This plot shows a negative association between happiness scores and national average of corrpution perceptions.
 
-```{r}
+```{r, warning = FALSE}
 plot_positive = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$positive_affect, name = "positive_affect")
 plot_positive
 ```
 
+This plot shows a positive association between happiness scores and average of three positive affect measures in GWP: happiness, laugh and enjoyment.
 
-```{r}
+
+```{r, warning = FALSE}
 plot_negative = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$negative_affect, name = "negative_affect")
 plot_negative
 
 ```
 
+This plot shows a negative association between happiness scores and average of three negative affect measures in GWP: worry, sadness and anger.
