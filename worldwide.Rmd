@@ -57,7 +57,11 @@ plot_2018_map = happy_iso3 %>%
   plot_ly(
     type = 'choropleth', locations = ~country_code, z = ~life_ladder,
     text = ~country_name
-  )
+  ) %>% 
+  layout(
+    title = "Distribution of Happiness Score around the World") %>% 
+  colorbar(title = "Happiness Score")
+
 plot_2018_map
 ```
 
@@ -71,7 +75,10 @@ From this plot, we can see that countries in North Europe, Oceania, North Americ
 happy_df %>% 
   filter(year == "2018") %>% 
   mutate( country_name = fct_reorder(country_name, life_ladder) ) %>% 
-  plot_ly(x = ~life_ladder, y = ~country_name, color = ~country_name, type = "bar", colors = "viridis")
+  plot_ly(x = ~life_ladder, y = ~country_name, color = ~country_name, type = "bar", colors = "viridis") %>% 
+  layout(title = 'Rank of Happiness Scores in 2018',
+         xaxis = list(title = 'Happiness Score'), 
+         yaxis = list(title = 'Country Name'))
 ```
 
 We used a bar plot to show the rank of different countries' happiness scores. While we see the happiness on a geographic distribution in the world map, we could clearly see how countries rank from the highest happiness score to the lowest happiness score. We see that Denmark has the highest happiness score and Afghanistan has the lowest happiness score.
@@ -84,8 +91,14 @@ We used a bar plot to show the rank of different countries' happiness scores. Wh
 yearly_trend = 
   happy_df %>% 
   filter(country_name == "Denmark" | country_name == "United States" | country_name == "China" | country_name == "Afghanistan" | country_name == "Mongolia" | country_name == "Haiti") %>% 
-  ggplot(aes(group = country_name, x = year, y = life_ladder, color = country_name)) + geom_point(alpha = .5) + geom_line() 
-ggplotly(yearly_trend)
+  ggplot(aes(group = country_name, x = year, y = life_ladder, color = country_name)) + 
+  geom_point(alpha = .5) + 
+  geom_line() +
+  ggtitle("Yearly Trend of Happiness Scores in 6 Countries \nfrom Different Happiness-Score Group") + 
+  scale_color_discrete("Country Name") +
+  xlab("Year") + ylab("Happiness Score")
+
+ggplotly(yearly_trend) 
 ```
 
 <br>
