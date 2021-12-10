@@ -13,8 +13,8 @@
 
 <title>COVID19</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
-<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -434,6 +434,7 @@ happy_df = readxl::read_xls(&#39;DataPanelWHR2021C2.xls&#39;) %&gt;%
 
 happy_df %&gt;% 
   group_by(country_continent) %&gt;% 
+<<<<<<< HEAD
   summarize(n = n()) %&gt;% 
   knitr::kable(col.names = c(&quot;Continent&quot;, &quot;Number of Countries in Happiness Dataset&quot;))</code></pre>
 <table>
@@ -466,6 +467,25 @@ happy_df %&gt;%
 </tr>
 </tbody>
 </table>
+=======
+  summarize(n = n())</code></pre>
+<pre><code>## # A tibble: 5 x 2
+##   country_continent     n
+##   &lt;chr&gt;             &lt;int&gt;
+## 1 Africa              138
+## 2 Americas             77
+## 3 Asia                150
+## 4 Europe              151
+## 5 Oceania               8</code></pre>
+<pre class="r"><code>covid_death_rate = covid_df %&gt;% 
+  plot_ly(x = ~country_name, 
+         y = ~covid_19_deaths_per_100_000_population_in_2020,
+         type = &quot;bar&quot;, colors = &quot;viridis&quot;)
+
+covid_death_rate</code></pre>
+<div id="htmlwidget-442e018c0a0645354e17" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-442e018c0a0645354e17">{"x":{"visdat":{"3f0ce8a7340":["function () ","plotlyVisDat"]},"cur_data":"3f0ce8a7340","attrs":{"3f0ce8a7340":{"x":{},"y":{},"colors":"viridis","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"country_name","type":"category","categoryorder":"array","categoryarray":["Armenia","Austria","Azerbaijan","Belgium","Brazil","Bulgaria","Chile","Colombia","Croatia","Cyprus","Czech Republic","Denmark","Ecuador","Estonia","Finland","France","Germany","Greece","Hong Kong S.A.R. of China","Hungary","Iceland","Israel","Italy","Japan","Kazakhstan","Kosovo","Kyrgyzstan","Latvia","Lithuania","Luxembourg","Malaysia","Malta","Mauritius","Mexico","Moldova","Mongolia","Netherlands","New Zealand","North Macedonia","Norway","Oman","Panama","Paraguay","Peru","Poland","Portugal","Qatar","Russia","Serbia","Singapore","Slovakia","Slovenia","South Korea","Spain","Sweden","Switzerland","Taiwan Province of China","Tajikistan","Thailand","Ukraine","United Kingdom","United States","Uzbekistan"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"covid_19_deaths_per_100_000_population_in_2020"},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["United States","United Kingdom","France","Germany","Netherlands","Belgium","Spain","Italy","Poland","Hungary","Czech Republic","Sweden","Greece","Denmark","Hong Kong S.A.R. of China","Singapore","Japan","Brazil","Mexico","Israel","Thailand","New Zealand","South Korea","Taiwan Province of China","Kazakhstan","Kyrgyzstan","Moldova","Russia","Ukraine","Armenia","Austria","Azerbaijan","Bulgaria","Chile","Colombia","Croatia","Cyprus","Ecuador","Estonia","Finland","Iceland","Latvia","Lithuania","Luxembourg","North Macedonia","Malaysia","Malta","Mauritius","Mongolia","Norway","Oman","Panama","Paraguay","Peru","Portugal","Qatar","Serbia","Slovakia","Slovenia","Switzerland","Tajikistan","Uzbekistan","Kosovo"],"y":[104.451400756836,108.449501037598,99.211799621582,40.3311004638672,67.260498046875,168.495697021484,108.731101989746,122.654197692871,75.4467010498047,98.7230987548828,108.133499145508,86.4122009277344,46.4162979125977,22.4093990325928,1.97412610054016,0.495699971914291,2.60290002822876,91.7151031494141,97.5756988525391,38.4146995544434,0.0903000012040138,0.518400013446808,1.78859996795654,0.0294000003486872,14.7044010162354,20.7688999176025,73.996696472168,38.5591011047363,44.0872001647949,95.2675018310547,69.0841979980469,26.0475006103516,109.031600952148,86.8791961669922,84.926399230957,95.4870986938477,13.5860004425049,79.5439987182617,17.2630004882812,10.125,8.49820041656494,33.6655006408691,53.5578002929688,79.0764999389648,120.141296386719,1.45519995689392,49.5992012023926,0.786300003528595,0.0305000003427267,8.04240036010742,29.3540000915527,93.2146987915039,31.7139015197754,114.279296875,67.7276992797852,8.50380039215088,47.1886978149414,39.1601028442383,129.730102539062,88.3343048095703,0.943599998950958,1.83449995517731,68.9164962768555],"type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+>>>>>>> 2a850f6f9b539c95f0f865f30c478e12bdf1881d
 <pre class="r"><code>happy_wider = 
   happy_df %&gt;% 
   pivot_wider(
@@ -497,6 +517,7 @@ covid_death_rate</code></pre>
 <script type="application/json" data-for="htmlwidget-c1064f39441f50b56943">{"x":{"visdat":{"e3ed30e79928":["function () ","plotlyVisDat"]},"cur_data":"e3ed30e79928","attrs":{"e3ed30e79928":{"x":{},"y":{},"color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"COVID19 Deaths per 100,000 Population in 2020 in Each Country","xaxis":{"domain":[0,1],"automargin":true,"title":"Country Name","type":"category","categoryorder":"array","categoryarray":["Austria","Belgium","Brazil","Bulgaria","Chile","Colombia","Croatia","Cyprus","Denmark","Ecuador","Estonia","Finland","France","Germany","Greece","Hungary","Israel","Italy","Japan","Kazakhstan","Kyrgyzstan","Latvia","Lithuania","Malta","Mauritius","Mexico","Moldova","Mongolia","Netherlands","New Zealand","North Macedonia","Norway","Poland","Portugal","Russia","Serbia","Slovakia","Slovenia","South Korea","Spain","Sweden","Switzerland","Taiwan Province of China","Tajikistan","Thailand","Ukraine","United Kingdom","United States"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"COVID19 Deaths per 100,000 Population"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Mauritius"],"y":[0.786300003528595],"type":"bar","name":"Africa","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)"},"error_y":{"color":"rgba(102,194,165,1)"},"error_x":{"color":"rgba(102,194,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["United States","Brazil","Mexico","Chile","Colombia","Ecuador"],"y":[104.451400756836,91.7151031494141,97.5756988525391,86.8791961669922,84.926399230957,79.5439987182617],"type":"bar","name":"Americas","marker":{"color":"rgba(252,141,98,1)","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)"},"error_y":{"color":"rgba(252,141,98,1)"},"error_x":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Japan","Israel","Thailand","South Korea","Taiwan Province of China","Kazakhstan","Kyrgyzstan","Cyprus","Mongolia","Tajikistan"],"y":[2.60290002822876,38.4146995544434,0.0903000012040138,1.78859996795654,0.0294000003486872,14.7044010162354,20.7688999176025,13.5860004425049,0.0305000003427267,0.943599998950958],"type":"bar","name":"Asia","marker":{"color":"rgba(141,160,203,1)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)"},"error_y":{"color":"rgba(141,160,203,1)"},"error_x":{"color":"rgba(141,160,203,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["United Kingdom","France","Germany","Netherlands","Belgium","Spain","Italy","Poland","Hungary","Sweden","Greece","Denmark","Moldova","Russia","Ukraine","Austria","Bulgaria","Croatia","Estonia","Finland","Latvia","Lithuania","North Macedonia","Malta","Norway","Portugal","Serbia","Slovakia","Slovenia","Switzerland"],"y":[108.449501037598,99.211799621582,40.3311004638672,67.260498046875,168.495697021484,108.731101989746,122.654197692871,75.4467010498047,98.7230987548828,86.4122009277344,46.4162979125977,22.4093990325928,73.996696472168,38.5591011047363,44.0872001647949,69.0841979980469,109.031600952148,95.4870986938477,17.2630004882812,10.125,33.6655006408691,53.5578002929688,120.141296386719,49.5992012023926,8.04240036010742,67.7276992797852,47.1886978149414,39.1601028442383,129.730102539062,88.3343048095703],"type":"bar","name":"Europe","marker":{"color":"rgba(231,138,195,1)","line":{"color":"rgba(231,138,195,1)"}},"textfont":{"color":"rgba(231,138,195,1)"},"error_y":{"color":"rgba(231,138,195,1)"},"error_x":{"color":"rgba(231,138,195,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["New Zealand"],"y":[0.518400013446808],"type":"bar","name":"Oceania","marker":{"color":"rgba(166,216,84,1)","line":{"color":"rgba(166,216,84,1)"}},"textfont":{"color":"rgba(166,216,84,1)"},"error_y":{"color":"rgba(166,216,84,1)"},"error_x":{"color":"rgba(166,216,84,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code>covid_happy_trend %&gt;% 
   group_by(country_continent) %&gt;% 
+<<<<<<< HEAD
   summarize(n = n()) %&gt;% 
   knitr::kable(col.names = c(&quot;Continent&quot;, &quot;Number of Countries in both Happiness and COVID Dataset&quot;))</code></pre>
 <table>
@@ -532,6 +553,18 @@ covid_death_rate</code></pre>
 </div>
 <div id="change-in-happiness-score-related-to-covid19" class="section level2">
 <h2>Change in Happiness Score Related to COVID19</h2>
+=======
+  summarise(n = n())</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   country_continent     n
+##   &lt;chr&gt;             &lt;int&gt;
+## 1 Africa                1
+## 2 Americas              9
+## 3 Asia                 16
+## 4 Europe               33
+## 5 Oceania               1
+## 6 &lt;NA&gt;                  3</code></pre>
+>>>>>>> 2a850f6f9b539c95f0f865f30c478e12bdf1881d
 <pre class="r"><code>covid_happy_trend %&gt;% 
   ggplot(aes(x = covid_19_deaths_per_100_000_population_in_2020, 
              y = happy_change_2020)) +

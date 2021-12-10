@@ -389,18 +389,24 @@ div.tocify {
 </div>
 
 
-<pre class="r"><code>happy_df = readxl::read_xls(&#39;DataPanelWHR2021C2.xls&#39;) %&gt;% 
-  janitor::clean_names()</code></pre>
 <div id="data-distribution" class="section level2">
 <h2>Data Distribution</h2>
+<pre class="r"><code>happy_df = readxl::read_xls(&#39;DataPanelWHR2021C2.xls&#39;) %&gt;% 
+  janitor::clean_names() %&gt;% 
+  rename(&quot;happiness_score&quot;= life_ladder)</code></pre>
 <p>To identify the significance of relationships and establish a regression model to predict the happiness score, we first take a look on the distribution of each variable.</p>
 <pre class="r"><code>par(mfrow= c(3,3))
+# mtext(&quot;Variable Distribution&quot;, side = 3, line = -2, outer = TRUE)
 for (n in 3:ncol(happy_df)){
-  var = names(happy_df)[n]
-  pull(happy_df,n) %&gt;% hist(main=var,xlab=var)
-}</code></pre>
-<p><img src="Regression_analysis_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<p>Here our response variable <code>lie_ladder</code> follows great bell shape and is relatively non-skewed. Most of the factors are normally distributed. Therefore we can proceed to build regression model.</p>
+  var = names(happy_df)[n] %&gt;% 
+    str_replace_all(&quot;_&quot;,&quot; &quot;) %&gt;% 
+    str_to_title()
+  pull(happy_df,n) %&gt;% 
+    hist(main=NA,xlab=var)
+}
+mtext(&quot;Variable Distribution&quot;, side = 3, line = -2, outer = TRUE)</code></pre>
+<p><img src="Regression_analysis_files/figure-html/unnamed-chunk-2-1.png" width="768" /></p>
+<p>Here our happiness score follows great bell shape and is relatively non-skewed. Most of the factors are normally distributed. Therefore we can proceed to build regression model.</p>
 </div>
 <div id="linear-regression-model" class="section level2">
 <h2>Linear regression model</h2>
@@ -409,9 +415,12 @@ for (n in 3:ncol(happy_df)){
 happy_fit = happy_df %&gt;% 
   select(-country_name,-year)
 fit = happy_fit %&gt;%
-  lm(life_ladder~., data=.)
+  lm(happiness_score~., data=.)
 fit_est = fit %&gt;% 
-  broom.mixed::tidy()
+  broom.mixed::tidy() %&gt;% 
+  mutate(
+    term = str_replace_all(term,&quot;_&quot;,&quot; &quot;),
+    term = str_to_title(term))
 
 knitr::kable(fit_est)</code></pre>
 <table>
@@ -433,56 +442,56 @@ knitr::kable(fit_est)</code></pre>
 <td align="right">0.0000000</td>
 </tr>
 <tr class="even">
-<td align="left">log_gdp_per_capita</td>
+<td align="left">Log Gdp Per Capita</td>
 <td align="right">0.3823714</td>
 <td align="right">0.0254857</td>
 <td align="right">15.0034000</td>
 <td align="right">0.0000000</td>
 </tr>
 <tr class="odd">
-<td align="left">social_support</td>
+<td align="left">Social Support</td>
 <td align="right">1.8444740</td>
 <td align="right">0.1752311</td>
 <td align="right">10.5259501</td>
 <td align="right">0.0000000</td>
 </tr>
 <tr class="even">
-<td align="left">healthy_life_expectancy_at_birth</td>
+<td align="left">Healthy Life Expectancy At Birth</td>
 <td align="right">0.0267282</td>
 <td align="right">0.0034677</td>
 <td align="right">7.7078655</td>
 <td align="right">0.0000000</td>
 </tr>
 <tr class="odd">
-<td align="left">freedom_to_make_life_choices</td>
+<td align="left">Freedom To Make Life Choices</td>
 <td align="right">0.3900271</td>
 <td align="right">0.1307944</td>
 <td align="right">2.9819865</td>
 <td align="right">0.0029046</td>
 </tr>
 <tr class="even">
-<td align="left">generosity</td>
+<td align="left">Generosity</td>
 <td align="right">0.4195941</td>
 <td align="right">0.0923454</td>
 <td align="right">4.5437459</td>
 <td align="right">0.0000059</td>
 </tr>
 <tr class="odd">
-<td align="left">perceptions_of_corruption</td>
+<td align="left">Perceptions Of Corruption</td>
 <td align="right">-0.6997192</td>
 <td align="right">0.0879900</td>
 <td align="right">-7.9522603</td>
 <td align="right">0.0000000</td>
 </tr>
 <tr class="even">
-<td align="left">positive_affect</td>
+<td align="left">Positive Affect</td>
 <td align="right">1.9879308</td>
 <td align="right">0.1700964</td>
 <td align="right">11.6870863</td>
 <td align="right">0.0000000</td>
 </tr>
 <tr class="odd">
-<td align="left">negative_affect</td>
+<td align="left">Negative Affect</td>
 <td align="right">0.1853176</td>
 <td align="right">0.1865965</td>
 <td align="right">0.9931458</td>
@@ -490,14 +499,14 @@ knitr::kable(fit_est)</code></pre>
 </tr>
 </tbody>
 </table>
-<p>The result indicated that log_gdp_per_capita, social_support, healthy_life_expectancy_at_birth, freedom_to_make_life_choices, generosity, perceptions_of_corruption, positive_affect are all significantly correlated with happiness score, while negative_affect does not.</p>
+<p>The result indicated that Log Gdp Per Capita, Social Support, Healthy Life Expectancy At Birth, Freedom To Make Life Choices, Generosity, Perceptions Of Corruption, Positive Affect are all significantly correlated with happiness score, while Negative Affect does not.</p>
 </div>
 <div id="model-diagnostic" class="section level2">
 <h2>Model diagnostic</h2>
 <p>To test if the model follows assumption of normal distribution, we could plot the QQ plots and related diagnostic plots.</p>
 <pre class="r"><code>par(mfrow=c(2,2))
 plot(fit)</code></pre>
-<p><img src="Regression_analysis_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="Regression_analysis_files/figure-html/unnamed-chunk-4-1.png" width="768" /></p>
 <p>The majority of data follows normal distribution, thus we could go on.</p>
 </div>
 <div id="cross-validation" class="section level2">
@@ -508,14 +517,15 @@ plot(fit)</code></pre>
 cv_df = crossv_mc(happy_fit, 100) %&gt;% 
   mutate(train = map(train,as_tibble),
          test = map(test, as_tibble)) %&gt;% 
-  mutate(linear_mod = map(train, ~lm(life_ladder ~ ., data = .x)) ) %&gt;% 
+  mutate(linear_mod = map(train, ~lm(happiness_score ~ ., data = .x)) ) %&gt;% 
   mutate(
     rmse_linear = map2_dbl(linear_mod, test, ~rmse(model = .x, data = .y)) )</code></pre>
-<pre class="r"><code>ggplot(cv_df,aes(x=&quot;linear&quot;,y=rmse_linear))+geom_violin()</code></pre>
-<p><img src="Regression_analysis_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<pre class="r"><code>mean_rmse = mean(pull(cv_df,rmse_linear))
-mean_rmse</code></pre>
-<pre><code>## [1] 0.5472725</code></pre>
+<pre class="r"><code>ggplot(cv_df,aes(x=&quot;linear&quot;,y=rmse_linear)) +
+  geom_violin(fill=&quot;lightblue&quot;,alpha=0.7) +
+  labs(x = NULL, y = &quot;RMSE&quot;,title = &quot;RMSE of Linear Model Cross-Validation&quot;)+
+  theme_bw()</code></pre>
+<p><img src="Regression_analysis_files/figure-html/unnamed-chunk-6-1.png" width="384" /></p>
+<pre class="r"><code>mean_rmse = mean(pull(cv_df,rmse_linear))</code></pre>
 <p>Here we can see the mean RMSE is 0.5472725, which is acceptable. Therefore, the model could be used to predict the country’s happiness score.</p>
 </div>
 <div id="model-interpretation" class="section level2">
