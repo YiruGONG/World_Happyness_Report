@@ -143,8 +143,8 @@ happy_df %>%
     x = ~life_ladder, y = ~country_name, color = ~country_name, 
     type = "bar", colors = "viridis") %>% 
   layout(
-    xaxis = list(title = "Happiness Score of 2018"), yaxis = list(title = NA)
-  )
+    xaxis = list(title = "Happiness Score of 2018"), yaxis = list(title = "Country")
+  ) 
 ```
 
 <br>
@@ -159,7 +159,12 @@ yearly_trend =
   filter(country_name == "Denmark" | country_name == "United States" | country_name == "China" | country_name == "Afghanistan" | country_name == "Mongolia" | country_name == "Haiti") %>% 
   ggplot(aes(x = year, y = life_ladder, group = country_name, color = country_name)) +
     geom_point(alpha = .5) + 
-    geom_line() 
+    geom_line() +
+  labs(
+    title = "Happiness Score Yearly Trend",
+    x = "Year",
+    y = "Happiness Score"
+  )
 ggplotly(yearly_trend)
 ```
 
