@@ -71,6 +71,7 @@ This dataset contains 1949 observations of happiness score and related social fa
 ```{r, warning=FALSE}
 happy_df = readxl::read_xls('DataPanelWHR2021C2.xls') %>% 
   janitor::clean_names() %>% 
+  rename("happiness_score"= life_ladder) %>% 
   mutate(
     country_continent = countrycode(country_name, "country.name", "continent")
   ) %>% 
@@ -124,7 +125,7 @@ We focused on Year 2018 because we wanted to know the happiness score before COV
 happy_iso3 %>% 
   filter(year == 2018) %>% 
   plot_ly(
-    type = 'choropleth', locations = ~country_code, z = ~life_ladder,
+    type = 'choropleth', locations = ~country_code, z = ~happiness_score,
     text = ~country_name
   )
 ```
@@ -138,9 +139,9 @@ We used data of 2018 to plot this graph because we wanted to know people's happi
 ```{r}
 happy_df %>% 
   filter(year == "2018") %>% 
-  mutate(country_name = fct_reorder(country_name, life_ladder)) %>% 
+  mutate(country_name = fct_reorder(country_name, happiness_score)) %>% 
   plot_ly(
-    x = ~life_ladder, y = ~country_name, color = ~country_name, 
+    x = ~happiness_score, y = ~country_name, color = ~country_name, 
     type = "bar", colors = "viridis") %>% 
   layout(
     xaxis = list(title = "Happiness Score of 2018"), yaxis = list(title = "Country")
@@ -157,7 +158,7 @@ We wanted to see countries' happiness score trend on a yearly base and chose two
 yearly_trend = 
   happy_df %>% 
   filter(country_name == "Denmark" | country_name == "United States" | country_name == "China" | country_name == "Afghanistan" | country_name == "Mongolia" | country_name == "Haiti") %>% 
-  ggplot(aes(x = year, y = life_ladder, group = country_name, color = country_name)) +
+  ggplot(aes(x = year, y = happiness_score, group = country_name, color = country_name)) +
     geom_point(alpha = .5) + 
     geom_line() +
   labs(
@@ -200,14 +201,14 @@ gg_factor = function(A,B,name){
 }
 
 # Plot
-gg_log = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$log_gdp_per_capita, name = "log_gdp_per_capita")
-gg_social = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$social_support, name = "social_support")
-gg_healthy = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$healthy_life_expectancy_at_birth, name = "healthy_life_expectancy_at_birth")
-gg_freedom = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$freedom_to_make_life_choices, name = "freedom_to_make_life_choices")
-gg_generosity = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$generosity, name = "generosity")
-gg_perceptions = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$perceptions_of_corruption, name = "perceptions_of_corruption")
-gg_positive = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$positive_affect, name = "positive_affect")
-gg_negative = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$negative_affect, name = "negative_affect")
+gg_log = gg_factor(A=happy_df_fac$happiness_score,B =happy_df_fac$log_gdp_per_capita, name = "log_gdp_per_capita")
+gg_social = gg_factor(A=happy_df_fac$happiness_score,B =happy_df_fac$social_support, name = "social_support")
+gg_healthy = gg_factor(A=happy_df_fac$happiness_score,B =happy_df_fac$healthy_life_expectancy_at_birth, name = "healthy_life_expectancy_at_birth")
+gg_freedom = gg_factor(A=happy_df_fac$happiness_score,B =happy_df_fac$freedom_to_make_life_choices, name = "freedom_to_make_life_choices")
+gg_generosity = gg_factor(A=happy_df_fac$happiness_score,B =happy_df_fac$generosity, name = "generosity")
+gg_perceptions = gg_factor(A=happy_df_fac$happiness_score,B =happy_df_fac$perceptions_of_corruption, name = "perceptions_of_corruption")
+gg_positive = gg_factor(A=happy_df_fac$happiness_score,B =happy_df_fac$positive_affect, name = "positive_affect")
+gg_negative = gg_factor(A=happy_df_fac$happiness_score,B =happy_df_fac$negative_affect, name = "negative_affect")
 ```
 
 ```{r fig.height = 12, fig.width = 8, message = FALSE, warning = FALSE}
@@ -222,15 +223,19 @@ As we can see in the plots, all the factors are related to the happiness score. 
 
 To identify the significance of relationships and establish a regression model to predict the happiness score, we first take a look on the distribution of each variable.
 
-```{r}
+```{r fig.width=8,fig.height=7}
 par(mfrow= c(3,3))
-for (n in 3:ncol(happy_df)){
-  var = names(happy_df)[n]
-  pull(happy_df,n) %>% hist(main=var,xlab=var)
+for (n in 4:ncol(happy_df)){
+  var = names(happy_df)[n] %>% 
+    str_replace_all("_"," ") %>% 
+    str_to_title()
+  pull(happy_df,n) %>% 
+    hist(main=NA,xlab=var)
 }
+mtext("Variable Distribution", side = 3, line = -2, outer = TRUE)
 ```
 
-Here our response variable `lie_ladder` follows great bell shape and is relatively non-skewed. Most of the factors are normally distributed. Therefore we can proceed to build regression model.
+Here our happiness score follows great bell shape and is relatively non-skewed. Most of the factors are normally distributed. Therefore we can proceed to build regression model.
 
 <br>
 
@@ -242,13 +247,18 @@ Since all factors are continuous, we can apply fundamental multivariable linear 
 # General Model
 happy_fit = happy_df %>% 
   select(-country_name,-year)
-fit = happy_fit %>% 
-  lm(life_ladder~., data=.) %>% 
-  broom.mixed::tidy()
-knitr::kable(fit)
+fit = happy_fit %>%
+  lm(happiness_score~., data=.)
+fit_est = fit %>% 
+  broom.mixed::tidy() %>% 
+  mutate(
+    term = str_replace_all(term,"_"," "),
+    term = str_to_title(term))
+
+knitr::kable(fit_est)
 ```
 
-The result indicated that `r fit[-1,] %>% filter(p.value<0.05) %>% pull(term)` are all significantly correlated with happiness score, while `r fit[-1,] %>% filter(p.value>=0.05) %>% pull(term)` does not.
+The result indicated that `r fit_est[-1,] %>% filter(p.value<0.05) %>% pull(term)` are all significantly correlated with happiness score, while `r fit_est[-1,] %>% filter(p.value>=0.05) %>% pull(term)` does not.
 
 <br>
 
@@ -264,15 +274,17 @@ cv_df = crossv_mc(happy_fit, 100) %>%
     train = map(train,as_tibble),
     test = map(test, as_tibble)) %>% 
   mutate(
-    linear_mod = map(train, ~lm(life_ladder ~ ., data = .x)) ) %>% 
+    linear_mod = map(train, ~lm(happiness_score ~ ., data = .x)) ) %>% 
   mutate(
     rmse_linear = map2_dbl(linear_mod, test, ~rmse(model = .x, data = .y)) )
 ```
 
 ```{r}
-ggplot(cv_df,aes(x = "linear",y = rmse_linear)) + geom_violin()
+ggplot(cv_df,aes(x="linear",y=rmse_linear)) +
+  geom_violin(fill="lightblue",alpha=0.7) +
+  labs(x = NULL, y = "RMSE",title = "RMSE of Linear Model Cross-Validation")+
+  theme_bw()
 mean_rmse = mean(pull(cv_df,rmse_linear))
-mean_rmse
 ```
 
 Here we can see the mean RMSE is `r mean_rmse`, which is acceptable. Therefore, the model could be used to predict the country's happiness score.

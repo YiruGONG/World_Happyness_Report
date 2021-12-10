@@ -14,12 +14,15 @@ library(shiny)
 library(countrycode)
 library(plotly)
 library(rsconnect)
+
+# rsconnect::deployApp("./shiny/")
 ```
 
 ```{r options, include = F}
 ## Data input
 happy_df = readxl::read_xls('DataPanelWHR2021C2.xls') %>% 
   janitor::clean_names() %>% 
+  rename("happiness_score"= life_ladder) %>% 
   subset(
     country_name != "Kosovo" & country_name != "Somaliland region"
   ) %>% 
@@ -84,7 +87,7 @@ renderPlotly({
     developed %in% input$dev_status,
     country_continent %in% input$conti) %>% 
   plot_ly(
-    type = 'choropleth', locations = ~country_code, z = ~life_ladder,
+    type = 'choropleth', locations = ~country_code, z = ~happiness_score,
     text = ~country_name
   )
 })
@@ -103,12 +106,15 @@ renderPlotly({
     developed %in% input$dev_status,
     country_continent %in% input$conti) %>% 
   mutate(
-    country_name = fct_reorder(country_name, life_ladder),
-    rank = min_rank(desc(life_ladder)) ) %>% 
+    country_name = fct_reorder(country_name, happiness_score),
+    rank = min_rank(desc(happiness_score)) ) %>% 
   filter(rank >= input$rank[1] & rank <= input$rank[2]) %>% 
   plot_ly(
-    x = ~life_ladder, y = ~country_name, color = ~country_name, 
-    type = "bar", colors = "viridis")
+    x = ~happiness_score, y = ~country_name, color = ~country_name, 
+    type = "bar", colors = "viridis") %>% 
+  layout(
+    xaxis = list(title = "Happiness Score"), yaxis = list(title = NA)
+  )
 })
 ```
 
@@ -127,7 +133,10 @@ renderPlotly({
   filter(rank >= input$rank[1] & rank <= input$rank[2]) %>% 
   plot_ly(
     x = ~log_gdp_per_capita, y = ~country_name, color = ~country_name, 
-    type = "bar", colors = "viridis")
+    type = "bar", colors = "viridis") %>% 
+  layout(
+    xaxis = list(title = "Log-GDP per Capita"), yaxis = list(title = NA)
+  )
 })
 ```
 
@@ -146,7 +155,10 @@ renderPlotly({
   filter(rank >= input$rank[1] & rank <= input$rank[2]) %>% 
   plot_ly(
     x = ~social_support, y = ~country_name, color = ~country_name, 
-    type = "bar", colors = "viridis")
+    type = "bar", colors = "viridis") %>% 
+  layout(
+    xaxis = list(title = "Social Support"), yaxis = list(title = NA)
+  )
 })
 ```
 
@@ -206,11 +218,16 @@ renderPlotly({
       country_continent %in% input$conti2,
       developed %in% input$dev_status,
       year >= input$year_rg[1] & year <= input$year_rg[2],
-      life_ladder <= quantile(life_ladder,1-input$happy_rg[1]*0.01) & life_ladder >= quantile(life_ladder,1-input$happy_rg[2]*0.01) ) %>%
+      happiness_score <= quantile(happiness_score,1-input$happy_rg[1]*0.01) & happiness_score >= quantile(happiness_score,1-input$happy_rg[2]*0.01) ) %>%
     filter(
       log_gdp_per_capita <= quantile(log_gdp_per_capita,1-input$gdp_rg[1]*0.01) & log_gdp_per_capita >= quantile(log_gdp_per_capita,1-input$gdp_rg[2]*0.01)) %>% 
     mutate(year = as.integer(year)) %>% 
-    ggplot(aes(group = country_name, x = year, y = life_ladder, color = country_name)) + geom_point(alpha = .5) + geom_line()
+    ggplot(aes(group = country_name, x = year, y = happiness_score, color = country_name)) +
+      geom_point(alpha = .5) + 
+      geom_line() +
+      labs(x = "Year",
+           y = "Happiness Score",
+           color = "Country")
   
   ggplotly(yearly_trend)
 })
@@ -225,10 +242,11 @@ renderTable({
       country_continent %in% input$conti2,
       developed %in% input$dev_status,
       year >= input$year_rg[1] & year <= input$year_rg[2],
-      life_ladder <= quantile(life_ladder,1-input$happy_rg[1]*0.01) & life_ladder >= quantile(life_ladder,1-input$happy_rg[2]*0.01) ) %>%
+      happiness_score <= quantile(happiness_score,1-input$happy_rg[1]*0.01) & happiness_score >= quantile(happiness_score,1-input$happy_rg[2]*0.01) ) %>%
     filter(
       log_gdp_per_capita <= quantile(log_gdp_per_capita,1-input$gdp_rg[1]*0.01) & log_gdp_per_capita >= quantile(log_gdp_per_capita,1-input$gdp_rg[2]*0.01)) %>% 
-    mutate(year = as.integer(year))
+    mutate(year = as.integer(year)) %>% 
+    rename_with(~str_to_title(str_replace_all(.x,"_"," ")))
 })
 ```
 

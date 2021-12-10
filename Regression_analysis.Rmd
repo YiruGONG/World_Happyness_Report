@@ -32,7 +32,6 @@ To identify the significance of relationships and establish a regression model t
 
 ```{r fig.width=8,fig.height=7}
 par(mfrow= c(3,3))
-# mtext("Variable Distribution", side = 3, line = -2, outer = TRUE)
 for (n in 3:ncol(happy_df)){
   var = names(happy_df)[n] %>% 
     str_replace_all("_"," ") %>% 

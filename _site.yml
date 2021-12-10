@@ -8,7 +8,7 @@ navbar:
       - text: "Happiness Worldwide"
         href: worldwide.html
       - text: "Related factors"
-        href: Happiness_factors.html
+        href: Factors-and-Happiness.html
     - text: "Data Analysis"
       href: regression_analysis.html
     - text: "Map"
