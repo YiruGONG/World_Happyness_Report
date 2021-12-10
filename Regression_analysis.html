@@ -13,8 +13,8 @@
 
 <title>Regression Analysis</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
-<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -396,7 +396,6 @@ div.tocify {
   rename(&quot;happiness_score&quot;= life_ladder)</code></pre>
 <p>To identify the significance of relationships and establish a regression model to predict the happiness score, we first take a look on the distribution of each variable.</p>
 <pre class="r"><code>par(mfrow= c(3,3))
-# mtext(&quot;Variable Distribution&quot;, side = 3, line = -2, outer = TRUE)
 for (n in 3:ncol(happy_df)){
   var = names(happy_df)[n] %&gt;% 
     str_replace_all(&quot;_&quot;,&quot; &quot;) %&gt;% 
