@@ -13,8 +13,6 @@ navbar:
       href: regression_analysis.html
     - text: "Map"
       href: https://yirugong.shinyapps.io/shiny/
-    - text: "Data"
-      href: data.html 
     - text: "Proposal"
       href: Proposal.html
     - text: "Report"
