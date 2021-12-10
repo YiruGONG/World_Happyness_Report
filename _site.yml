@@ -9,6 +9,8 @@ navbar:
         href: worldwide.html
       - text: "Related factors"
         href: Happiness_factors.html
+      - text: "Influnce of COVID19"
+        href: COVID19.html
     - text: "Data Analysis"
       href: regression_analysis.html
     - text: "Map"
