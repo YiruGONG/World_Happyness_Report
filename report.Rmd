@@ -173,7 +173,7 @@ ggplotly(yearly_trend)
 
 ## Factors Related to Happiness Score
 
-To better explore the relationship between all the factors and happiness score, we used the `ggplot` and `plotly` to visualize the data and present the linear regression.
+To better explore the relationship between happiness score and every factor, we made the linear regression plots with `ggplot` and `plotly`, and calculated related estimates. Further, we analyzed the result and derived to a more direct and accurate conclusion. 
 
 ```{r message = FALSE, warning = FALSE}
 # Data Preparation
@@ -215,7 +215,7 @@ gg_negative = gg_factor(A=happy_df_fac$happiness_score,B =happy_df_fac$negative_
 (gg_log + gg_social + gg_healthy +gg_freedom ) / (gg_generosity + gg_perceptions + gg_positive + gg_negative)
 ```
 
-As we can see in the plots, all the factors are related to the happiness score. People would feel happy if the country they live in have high GDP, strong social support, and they could be free to make life choices, also the country is generous and offering positive affect. On the contrary, if a country has a corrupt government, people wouldn’t be happy.
+As we can see in the plots, all the factors are related to the happiness score. People would feel happy if the country they live in have high GDP, positive affect to people,  and they could be free to make life choices, also the country is generous and offering strong social support. On the contrary, if a country has a corrupt government, people wouldn’t be happy.
 
 <br>
 
