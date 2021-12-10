@@ -25,11 +25,7 @@ knitr::opts_chunk$set(warning=FALSE, message = FALSE)
 
 ```
 
-```{r}
-happy_df = readxl::read_xls('DataPanelWHR2021C2.xls') %>% 
-  janitor::clean_names()
 
-```
 
 <br>
 
@@ -48,12 +44,17 @@ happy_df_fac = readxl::read_xls('DataPanelWHR2021C2.xls') %>%
   janitor::clean_names() %>% 
   filter(year < 2019) %>% 
   map_dfc(round2) %>%
-  mutate(year = as.character(year))
+  mutate(year = as.character(year)) %>% 
+  rename("happiness_score"= life_ladder)
 
 
 
 # Graphic function
 gg_factor = function(A,B,name){
+  name = name %>% 
+    str_replace_all("_"," ") %>% 
+    str_to_title()
+  
   ggplot(happy_df_fac, aes(x = A, y = B))+
     geom_point(aes(color = year)) +
     geom_smooth(method = "lm") +
@@ -64,24 +65,24 @@ gg_factor = function(A,B,name){
 }
 ```
 
-```{r}
+```{r fig.height = 15, fig.width = 14}
 # Plot
 
-gg_log = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$log_gdp_per_capita, name = "log_gdp_per_capita")
-gg_social = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$social_support, name = "social_support")
-gg_healthy = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$healthy_life_expectancy_at_birth, name = "healthy_life_expectancy_at_birth")
-gg_freedom = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$freedom_to_make_life_choices, name = "freedom_to_make_life_choices")
-gg_generosity = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$generosity, name = "generosity")
-gg_perceptions = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$perceptions_of_corruption, name = "perceptions_of_corruption")
-gg_positive = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$positive_affect, name = "positive_affect")
-gg_negative = gg_factor(A=happy_df_fac$life_ladder,B =happy_df_fac$negative_affect, name = "negative_affect")
-```
+gg_log = gg_factor(A=happy_df_fac$happiness_score,B =happy_df_fac$log_gdp_per_capita, name = "log_gdp_per_capita")
+gg_social = gg_factor(A=happy_df_fac$happiness_score,B =happy_df_fac$social_support, name = "social_support")
+gg_healthy = gg_factor(A=happy_df_fac$happiness_score,B =happy_df_fac$healthy_life_expectancy_at_birth, name = "healthy_life_expectancy_at_birth")
+gg_freedom = gg_factor(A=happy_df_fac$happiness_score,B =happy_df_fac$freedom_to_make_life_choices, name = "freedom_to_make_life_choices")
+gg_generosity = gg_factor(A=happy_df_fac$happiness_score,B =happy_df_fac$generosity, name = "generosity")
+gg_perceptions = gg_factor(A=happy_df_fac$happiness_score,B =happy_df_fac$perceptions_of_corruption, name = "perceptions_of_corruption")
+gg_positive = gg_factor(A=happy_df_fac$happiness_score,B =happy_df_fac$positive_affect, name = "positive_affect")
+gg_negative = gg_factor(A=happy_df_fac$happiness_score,B =happy_df_fac$negative_affect, name = "negative_affect")
 
-<br>
-
-```{r fig.height = 15, fig.width = 14}
 library(patchwork)
-(gg_log + gg_social+ gg_healthy + gg_freedom)/(gg_generosity + gg_perceptions+ gg_positive + gg_negative)
+(gg_log + gg_social+ gg_healthy + gg_freedom)/(gg_generosity + gg_perceptions+ gg_positive + gg_negative)+ 
+    plot_layout(guides = "collect") + 
+    plot_annotation(title = "First sight on factors & happiness score") & 
+    theme(
+      legend.position = "bottom")
 
 ```
 
@@ -93,6 +94,10 @@ As we can see in the plots, all the factors are related to the happiness score. 
 
 ```{r}
 plot_happy = function(A,B,name){
+    name = name %>% 
+    str_replace_all("_"," ") %>% 
+    str_to_title()
+    
 happy_B = bind_cols(A=A,B=B,country_name = happy_df_fac$country_name,
                     year = happy_df_fac$year) %>% 
   filter(!is.na(A)) %>%
@@ -130,13 +135,10 @@ happy_B%>%
 #### The relationship between GDP and Happiness score
 
 ```{r}
-plot_log = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$log_gdp_per_capita, name = "log_gdp_per_capita")
+plot_log = plot_happy(A=happy_df_fac$happiness_score,B =happy_df_fac$log_gdp_per_capita, name = "log_gdp_per_capita")
 plot_log
-```
-
-
-```{r}
-log_lm_df = lm(life_ladder ~ log_gdp_per_capita, data = happy_df_fac)
+ 
+log_lm_df = lm(happiness_score ~ log_gdp_per_capita, data = happy_df_fac)
 
 summ(log_lm_df)%>%
   tidy() %>%
@@ -152,13 +154,10 @@ As shown in the plot, high GDP has a positive effect on the happiness score. We 
 #### The relationship between Social support and Happiness score
 
 ```{r}
-plot_social = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$social_support, name = "social_support")
+plot_social = plot_happy(A=happy_df_fac$happiness_score,B =happy_df_fac$social_support, name = "social_support")
 plot_social
-```
-
-
-```{r}
-social_lm_df = lm(life_ladder ~ social_support , data = happy_df_fac)
+ 
+social_lm_df = lm(happiness_score ~ social_support , data = happy_df_fac)
 
 summ(social_lm_df)%>%
   tidy() %>%
@@ -174,13 +173,10 @@ As shown in the plot, strong social support has a positive effect on the happine
 #### The relationship between Healthy life expectancy at birth and Happiness score
 
 ```{r}
-plot_healthy = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$healthy_life_expectancy_at_birth, name = "healthy_life_expectancy_at_birth")
+plot_healthy = plot_happy(A=happy_df_fac$happiness_score,B =happy_df_fac$healthy_life_expectancy_at_birth, name = "healthy_life_expectancy_at_birth")
 plot_healthy
-```
-
-
-```{r}
-healthy_lm_df = lm(life_ladder ~ healthy_life_expectancy_at_birth , data = happy_df_fac)
+ 
+healthy_lm_df = lm(happiness_score ~ healthy_life_expectancy_at_birth , data = happy_df_fac)
 
 summ(healthy_lm_df)%>%
   tidy() %>%
@@ -196,13 +192,10 @@ As shown in the plot, good healthy life expectancy at birth has a positive effec
 #### The relationship between Freedom to make life choices and Happiness score
 
 ```{r echo = FALSE}
-plot_freedom = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$freedom_to_make_life_choices, name = "freedom_to_make_life_choices")
+plot_freedom = plot_happy(A=happy_df_fac$happiness_score,B =happy_df_fac$freedom_to_make_life_choices, name = "freedom_to_make_life_choices")
 plot_freedom
-```
-
-
-```{r}
-freedom_lm_df = lm(life_ladder ~ freedom_to_make_life_choices , data = happy_df_fac)
+ 
+freedom_lm_df = lm(happiness_score ~ freedom_to_make_life_choices , data = happy_df_fac)
 
 summ(freedom_lm_df)%>%
   tidy() %>%
@@ -218,13 +211,10 @@ As shown in the plot, if the people are free to make life choices, they are tend
 #### The relationship between Generosity and Happiness score
 
 ```{r}
-plot_generosity = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$generosity, name = "generosity")
+plot_generosity = plot_happy(A=happy_df_fac$happiness_score,B =happy_df_fac$generosity, name = "generosity")
 plot_generosity
-```
-
-
-```{r}
-generosity_lm_df = lm(life_ladder ~ generosity , data = happy_df_fac)
+ 
+generosity_lm_df = lm(happiness_score ~ generosity , data = happy_df_fac)
 
 summ(generosity_lm_df)%>%
   tidy() %>%
@@ -240,13 +230,10 @@ As shown in the plot, if the country is generous to the people, the people are t
 #### The relationship between Corruption and Happiness score
 
 ```{r}
-plot_perceptions = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$perceptions_of_corruption, name = "perceptions_of_corruption")
+plot_perceptions = plot_happy(A=happy_df_fac$happiness_score,B =happy_df_fac$perceptions_of_corruption, name = "perceptions_of_corruption")
 plot_perceptions
-```
-
-
-```{r}
-perceptions_lm_df = lm(life_ladder ~ perceptions_of_corruption , data = happy_df_fac)
+ 
+perceptions_lm_df = lm(happiness_score ~ perceptions_of_corruption , data = happy_df_fac)
 
 summ(perceptions_lm_df)%>%
   tidy() %>%
@@ -262,13 +249,10 @@ Corruption has a clear negative affect on the happiness score. As we can see in 
 #### The relationship between Positive affect and Happiness score
 
 ```{r}
-plot_positive = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$positive_affect, name = "positive_affect")
+plot_positive = plot_happy(A=happy_df_fac$happiness_score,B =happy_df_fac$positive_affect, name = "positive_affect")
 plot_positive
-```
-
-
-```{r}
-positive_lm_df = lm(life_ladder ~ positive_affect , data = happy_df_fac)
+ 
+positive_lm_df = lm(happiness_score ~ positive_affect , data = happy_df_fac)
 
 summ(positive_lm_df)%>%
   tidy() %>%
@@ -284,13 +268,10 @@ As shown in the plot, positive affect could make people feel happy. We can see f
 #### The relationship between Negative affect and Happiness score
 
 ```{r}
-plot_negative = plot_happy(A=happy_df_fac$life_ladder,B =happy_df_fac$negative_affect, name = "negative_affect")
+plot_negative = plot_happy(A=happy_df_fac$happiness_score,B =happy_df_fac$negative_affect, name = "negative_affect")
 plot_negative
-```
-
-
-```{r}
-negative_lm_df = lm(life_ladder ~ negative_affect , data = happy_df_fac)
+ 
+negative_lm_df = lm(happiness_score ~ negative_affect , data = happy_df_fac)
 
 summ(negative_lm_df)%>%
   tidy() %>%
