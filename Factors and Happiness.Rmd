@@ -1,5 +1,5 @@
 ---
-title: "Factors and Happiness"
+title: "Happiness score and related factors"
 author: "Yunlin Zhou"
 date: "12/9/2021"
 output: 
