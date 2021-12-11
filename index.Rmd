@@ -7,9 +7,9 @@ output:
     theme: cosmo
 ---
 
-<img src="happiness.jpeg" style="width:100%; border:2px solid">
-
-![](https://youtu.be/cgLU9vJMlgE)
+<div align="center">
+  <iframe src="https://www.youtube.com/embed/cgLU9vJMlgE" width="80%" height="400" frameborder="0" allowfullscreen=""></iframe>
+</div>
 
 ## Motivation
 
